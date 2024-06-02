@@ -1,7 +1,29 @@
+import path from 'path';
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { TanStackRouterVite } from '@tanstack/router-vite-plugin';
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
+export default defineConfig(() => {
+  const resolve = {
+    alias: {
+      '~': path.resolve(__dirname, './src'),
+      '@styled-system': path.resolve(__dirname, './public/styled-system'),
+    },
+  };
+
+  return {
+    resolve,
+    publicDir: './public',
+    plugins: [react(), TanStackRouterVite()],
+    server: {
+      port: 3000,
+      host: '127.0.0.1',
+      watch: {},
+    },
+    preview: {
+      port: 3001,
+      host: '127.0.0.1',
+    },
+  };
 });

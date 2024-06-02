@@ -1,11 +1,13 @@
 import ReactDOM from 'react-dom/client';
 import React from 'react';
 
-import App from './App.tsx';
-import './index.css';
+import { Router } from './router';
+import { ProvideQueryClient } from './query-client.js';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <ProvideQueryClient>
+      <Router />
+    </ProvideQueryClient>
   </React.StrictMode>,
 );
