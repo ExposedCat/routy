@@ -1,11 +1,7 @@
-import { z } from 'zod';
-
 import { buildLoaderApiCall } from '~/services/query.js';
 import { SessionSchema } from '~/models/session.js';
 
-const ResponseSchema = z.object({
-  session: SessionSchema,
-});
+const ResponseSchema = SessionSchema.nullable();
 
 export const session_query = buildLoaderApiCall({
   HttpMethod: 'get',

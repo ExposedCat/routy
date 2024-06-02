@@ -26,3 +26,9 @@ dist-ssr
 # Generated
 *.generated.ts
 styled-system
+## Panda
+public/styled-system
+public/styled-system-studio
+## Panda
+./public/styled-system
+./public/styled-system-studio

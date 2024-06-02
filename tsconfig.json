@@ -22,10 +22,10 @@
     "rootDir": "./src",
     "paths": {
       "~/*": ["./src/*"],
-      "@styled-system/*": ["./public/styled-system/*"]
+      "@styled-system/*": ["./src/styled-system/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/styled-system"],
   "types": ["vite/client"],
   "references": [
     {

@@ -8,7 +8,7 @@ export default defineConfig(() => {
   const resolve = {
     alias: {
       '~': path.resolve(__dirname, './src'),
-      '@styled-system': path.resolve(__dirname, './public/styled-system'),
+      '@styled-system': path.resolve(__dirname, './src/styled-system'),
     },
   };
 

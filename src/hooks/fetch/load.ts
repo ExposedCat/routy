@@ -7,6 +7,7 @@ import { SECOND } from '~/utils/datetime.js';
 import { fillUrlParamsInUrl } from '~/services/url.js';
 import type { AnyLoaderApiCall } from '~/services/query.js';
 import { httpRequest } from '~/services/http.js';
+import type { BackendResponse } from '~/services/http.js';
 import { useNullableSession } from '~/providers/session.js';
 import { useFetchResult } from './result.js';
 import type { QueryErrorType, UseFetchResult } from './result.js';
@@ -17,7 +18,6 @@ type UseApiLoadArgs<T extends AnyLoaderApiCall> = {
   apiCall: T;
   uniqueKey?: string;
   fetchImmediately?: boolean;
-  _ported?: boolean;
   refetchFilter?: () => boolean;
   dependencies?: any[];
   onLoaded?: (data: z.TypeOf<T['ResponseBodySchema']>) => void;
@@ -40,7 +40,6 @@ export function useApiLoad<T extends AnyLoaderApiCall>(args: UseApiLoadArgs<T>):
     urlParams,
     searchParams,
     fetchImmediately = true,
-    _ported = false,
     refetchFilter = () => true,
     dependencies = [],
     onLoaded,
@@ -49,14 +48,12 @@ export function useApiLoad<T extends AnyLoaderApiCall>(args: UseApiLoadArgs<T>):
 
   const wasEnabled = React.useRef(fetchImmediately);
 
-  const PathTemplate = _ported ? `/api/${apiCall.PathTemplate}` : apiCall.PathTemplate;
-
   const queryFn = React.useMemo(
     () => async () => {
       const data = await httpRequest({
         apiCall: {
           ...apiCall,
-          PathTemplate,
+          PathTemplate: apiCall.PathTemplate,
         },
         headers,
         urlParams: urlParams ?? null,
@@ -65,12 +62,12 @@ export function useApiLoad<T extends AnyLoaderApiCall>(args: UseApiLoadArgs<T>):
       onLoaded?.(data);
       return data;
     },
-    [PathTemplate, apiCall, onLoaded, searchParams, urlParams, headers],
+    [apiCall, onLoaded, searchParams, urlParams, headers],
   );
 
   const url: string = React.useMemo(
-    () => (urlParams ? fillUrlParamsInUrl(PathTemplate, urlParams) : PathTemplate),
-    [PathTemplate, urlParams],
+    () => (urlParams ? fillUrlParamsInUrl(apiCall.PathTemplate, urlParams) : apiCall.PathTemplate),
+    [apiCall.PathTemplate, urlParams],
   );
 
   const queryKey: QueryKey = React.useMemo(
@@ -78,7 +75,10 @@ export function useApiLoad<T extends AnyLoaderApiCall>(args: UseApiLoadArgs<T>):
     [session?.userId, uniqueKey, url],
   );
 
-  const query = useQuery<z.TypeOf<T['ResponseBodySchema']>, QueryErrorType<z.TypeOf<T['ResponseErrorBodySchema']>>>({
+  const query = useQuery<
+    BackendResponse<z.TypeOf<T['ResponseBodySchema']>>,
+    QueryErrorType<z.TypeOf<T['ResponseErrorBodySchema']>>
+  >({
     queryKey,
     queryFn,
     enabled: fetchImmediately,

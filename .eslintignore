@@ -2,5 +2,5 @@ build
 
 node_modules
 
-postcss.config.mjs
-panda.config.mjs
+postcss.config.cjs
+panda.config.ts

@@ -4,6 +4,7 @@ import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import type { FullError } from '~/utils/types.js';
 import type { AnyApiCall } from '~/services/query.js';
+import type { BackendResponse } from '~/services/http.js';
 import type { CommonFailedBody } from '~/models/common.js';
 
 export type QueryErrorType<ErrorType = CommonFailedBody> = FullError<ErrorType>;
@@ -73,22 +74,41 @@ export type AnyQuery<I, R, E> = ImmediateQuery<R, E> | PreparedQuery<I, R, E>;
 export function useFetchResult<T extends AnyApiCall>(
   query: AnyQuery<
     z.TypeOf<T['RequestBodySchema']>,
-    z.TypeOf<T['ResponseBodySchema']>,
+    BackendResponse<z.TypeOf<T['ResponseBodySchema']>>,
     z.TypeOf<T['ResponseErrorBodySchema']>
   >,
 ): UseFetchResult<z.TypeOf<T['ResponseBodySchema']>, z.TypeOf<T['ResponseErrorBodySchema']>> {
-  const pendingResult = React.useMemo<
-    UseFetchResult<z.TypeOf<T['ResponseBodySchema']>, z.TypeOf<T['ResponseErrorBodySchema']>>
-  >(
-    () => ({
-      isIdle: false,
-      isPending: true,
-      hasError: false,
-      error: null,
-      ...(query.data
-        ? { hasData: true, finished: true, data: query.data }
-        : { hasData: false, finished: false, data: null }),
-    }),
+  const pendingResult = React.useMemo(
+    () =>
+      (!query.data
+        ? {
+            isIdle: false,
+            isPending: true,
+            hasError: false,
+            error: null,
+            hasData: false,
+            finished: false,
+            data: null,
+          }
+        : query.data.ok
+          ? {
+              isIdle: false,
+              isPending: true,
+              hasError: false,
+              error: null,
+              hasData: true,
+              finished: true,
+              data: query.data,
+            }
+          : {
+              isIdle: false,
+              isPending: true,
+              hasError: true,
+              error: { message: query.data.message },
+              hasData: false,
+              finished: true,
+              data: null,
+            }) as PendingQueryResult<z.TypeOf<T['ResponseBodySchema']>>,
     [query.data],
   );
 
@@ -120,14 +140,26 @@ export function useFetchResult<T extends AnyApiCall>(
   }
 
   if (query.isSuccess) {
+    if (query.data.ok) {
+      return {
+        isIdle: false,
+        isPending: false,
+        finished: true,
+        hasError: false,
+        hasData: true,
+        error: null,
+        data: query.data,
+      };
+    }
+
     return {
       isIdle: false,
       isPending: false,
       finished: true,
-      hasError: false,
-      hasData: true,
-      error: null,
-      data: query.data,
+      hasError: true,
+      hasData: false,
+      error: { message: query.data.message },
+      data: null,
     };
   }
 

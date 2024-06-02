@@ -9,6 +9,8 @@ import type { ApiCall, ErrorBody, ResponseBody } from './query.js';
 export const isHttpRequestError = (error: { message?: string }): error is FullError<Error> =>
   error.message === 'HTTP request failed';
 
+export type BackendResponse<T> = { ok: true; message: string; data: T } | { ok: false; message: string; data: null };
+
 export async function httpRequest<T extends ApiCall<any, any, ResponseBody, any, any, any, ErrorBody, any>>(args: {
   apiCall: T;
   headers?: z.infer<T['RequestHeadersSchema']>;
@@ -16,7 +18,7 @@ export async function httpRequest<T extends ApiCall<any, any, ResponseBody, any,
   urlParams?: z.infer<T['UrlParamsSchema']>;
   query?: z.infer<T['QuerySchema']>;
   redirect?: RequestRedirect;
-}): Promise<z.infer<T['ResponseBodySchema']>> {
+}): Promise<BackendResponse<z.infer<T['ResponseBodySchema']>>> {
   const { apiCall, urlParams, headers: requestHeaders, body, query, redirect } = args;
 
   const token = sessionService.get();
@@ -70,12 +72,20 @@ export async function httpRequest<T extends ApiCall<any, any, ResponseBody, any,
       body: requestBody,
     });
 
-    if (result.status === 200 || result.status === 201 || result.status === 202) {
-      return apiCall.ResponseBodySchema.parse(await result.json());
-    } else if (result.status === 204 || result.status === 404) {
-      return null;
-    } else if (result.status === 302 && redirect === 'manual') {
-      return { url: result.headers.get('Location') };
+    if (result.status === 200) {
+      const responseBody: BackendResponse<any> = await result.json();
+      if (!('ok' in responseBody) || !('message' in responseBody) || !('data' in responseBody)) {
+        return {
+          ok: false,
+          message: 'Invalid Server Response',
+          data: null,
+        };
+      }
+      return {
+        ok: true,
+        message: responseBody.message,
+        data: apiCall.ResponseBodySchema.parse(responseBody.data),
+      };
     } else {
       let errorBody = await result.json();
       try {

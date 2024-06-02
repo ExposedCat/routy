@@ -65,7 +65,7 @@ export type SidebarButtonListProps = {
   options: SidebarButtonStyleProps;
 };
 
-export const SidebarButton = (props: SidebarButtonProps): React.JSX.Element => {
+export const SidebarButton: React.FC<SidebarButtonProps> = props => {
   const { redirect, label, icon, position, layout, align, id, isActive, className, expanded = false, ...rest } = props;
   const matches = useMatchesRoutes();
 

@@ -11,6 +11,7 @@ import { useMatchesRoutes } from '~/hooks/route.js';
 import { useApiLoad } from '~/hooks/fetch/load.js';
 import { Toaster } from '~/components/shadow-panda/Toaster.js';
 import { NotFoundPage } from '~/components/root/NotFoundPage.js';
+import { ErrorView } from '~/components/root/ErrorView.js';
 import { Sidebar } from '~/components/general/sidebar/Sidebar.js';
 
 export const Route = createRootRoute({
@@ -34,11 +35,7 @@ function Root(): React.JSX.Element {
 
   React.useEffect(() => {
     if (!matches(PUBLIC_ROUTES, true) && sessionQuery.hasData && sessionQuery.data === null) {
-      // TODO:
-      // void navigate({
-      //   to: '/login',
-      //   search: { origin: 'normal' },
-      // });
+      void navigate({ to: '/login' });
     } else {
       setOnLogin(matches(PUBLIC_ROUTES, true));
     }
@@ -50,9 +47,11 @@ function Root(): React.JSX.Element {
   });
 
   return (
-    <ProvideSession value={sessionQuery.data?.session ?? null}>
+    <ProvideSession value={sessionQuery.data ?? null}>
       <ProvideIconStyles>
         <Flex direction="horizontal" justify="start" align="full" className={contentStyles}>
+          Rendered
+          {sessionQuery.hasError && <ErrorView error={sessionQuery.error} />}
           {!onLogin && sessionQuery.data && <Sidebar />}
           {(onLogin || (sessionQuery.hasData && sessionQuery.data !== null)) && <Outlet />}
         </Flex>
