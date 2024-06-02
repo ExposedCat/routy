@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import type { AnyApiCall } from '~/services/query.js';
 import { httpRequest } from '~/services/http.js';
+import type { BackendResponse } from '~/services/http.js';
 import { log } from '../../utils/logger.js';
 import { useFetchResult } from './result.js';
 import type { QueryErrorType, UseFetchResult } from './result.js';
@@ -14,7 +15,6 @@ type UseApiActionArgs<T extends AnyApiCall> = {
   preExecute?: ApiActionExecuteProps<T>;
   onSuccess?: (data: z.TypeOf<T['ResponseBodySchema']>) => void;
   onError?: (error: QueryErrorType<z.TypeOf<T['ResponseErrorBodySchema']>>) => void;
-  _ported?: boolean;
 } & (T['UrlParamsSchema'] extends undefined ? { urlParams?: never } : { urlParams?: z.input<T['UrlParamsSchema']> }) &
   (T['QuerySchema'] extends undefined ? { searchParams?: never } : { searchParams: z.input<T['QuerySchema']> }) &
   (T['RequestHeadersSchema'] extends undefined ? { headers?: never } : { headers: z.input<T['RequestHeadersSchema']> });
@@ -38,21 +38,9 @@ const handleQueryError = (queryError: QueryErrorType<any>) => {
 };
 
 export function useApiAction<T extends AnyApiCall>(args: UseApiActionArgs<T>): UseApiActionResult<T> {
-  const {
-    uniqueKey,
-    apiCall,
-    onError,
-    onSuccess,
-    headers,
-    urlParams: callUrlParams,
-    searchParams,
-    preExecute,
-    _ported = false,
-  } = args;
+  const { uniqueKey, apiCall, onError, onSuccess, headers, urlParams: callUrlParams, searchParams, preExecute } = args;
 
   const executed = React.useRef(false);
-
-  const PathTemplate = _ported ? `/api/${apiCall.PathTemplate}` : apiCall.PathTemplate;
 
   const mutationFn = React.useMemo(
     () =>
@@ -61,23 +49,28 @@ export function useApiAction<T extends AnyApiCall>(args: UseApiActionArgs<T>): U
           body,
           apiCall: {
             ...apiCall,
-            PathTemplate,
+            PathTemplate: apiCall.PathTemplate,
           },
           headers,
           urlParams: !urlParams && !callUrlParams ? null : { ...urlParams, ...callUrlParams },
           query: searchParams,
         }),
-    [PathTemplate, apiCall, callUrlParams, searchParams, headers],
+    [apiCall, callUrlParams, searchParams, headers],
   );
 
   const query = useMutation<
-    z.TypeOf<T['ResponseBodySchema']>,
+    BackendResponse<z.TypeOf<T['ResponseBodySchema']>>,
     QueryErrorType<z.TypeOf<T['ResponseErrorBodySchema']>>,
     ApiActionExecuteProps<T>
   >({
-    mutationKey: ['api', PathTemplate, uniqueKey],
+    mutationKey: ['api', apiCall.PathTemplate, uniqueKey],
     mutationFn,
-    onSuccess,
+    onSuccess: data =>
+      data.ok
+        ? onSuccess?.(data)
+        : (onError ?? handleQueryError)({
+            message: data.message,
+          }),
     onError: onError ?? handleQueryError,
   });
 

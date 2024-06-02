@@ -11,7 +11,6 @@ import { useMatchesRoutes } from '~/hooks/route.js';
 import { useApiLoad } from '~/hooks/fetch/load.js';
 import { Toaster } from '~/components/shadow-panda/Toaster.js';
 import { NotFoundPage } from '~/components/root/NotFoundPage.js';
-import { ErrorView } from '~/components/root/ErrorView.js';
 import { Sidebar } from '~/components/general/sidebar/Sidebar.js';
 
 export const Route = createRootRoute({
@@ -34,12 +33,15 @@ function Root(): React.JSX.Element {
   }, [sessionQuery]);
 
   React.useEffect(() => {
-    if (!matches(PUBLIC_ROUTES, true) && sessionQuery.hasData && sessionQuery.data === null) {
+    if (
+      !matches(PUBLIC_ROUTES, true) &&
+      ((sessionQuery.hasData && sessionQuery.data === null) || sessionQuery.hasError)
+    ) {
       void navigate({ to: '/login' });
     } else {
-      setOnLogin(matches(PUBLIC_ROUTES, true));
+      setOnLogin(matches('/login', true));
     }
-  }, [matches, navigate, sessionQuery.data, sessionQuery.hasData]);
+  }, [matches, navigate, sessionQuery.data, sessionQuery.hasData, sessionQuery.hasError]);
 
   const contentStyles = css({
     height: '100%',
@@ -50,8 +52,6 @@ function Root(): React.JSX.Element {
     <ProvideSession value={sessionQuery.data ?? null}>
       <ProvideIconStyles>
         <Flex direction="horizontal" justify="start" align="full" className={contentStyles}>
-          Rendered
-          {sessionQuery.hasError && <ErrorView error={sessionQuery.error} />}
           {!onLogin && sessionQuery.data && <Sidebar />}
           {(onLogin || (sessionQuery.hasData && sessionQuery.data !== null)) && <Outlet />}
         </Flex>

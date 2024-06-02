@@ -8,8 +8,8 @@ import type { PropsFromCVA } from '~/utils/types.js';
 import type { NavigationRouteId } from '~/router.js';
 import { useMatchesRoutes } from '~/hooks/route.js';
 import { Tooltip } from '../Tooltip.js';
-import { Button } from '../Button.js';
-import type { ButtonProps } from '../Button.js';
+import { RedirectButton } from '../Button.js';
+import type { RedirectButtonProps } from '../Button.js';
 
 const sidebarButtonRecipe = cva({
   base: {
@@ -50,7 +50,7 @@ const menuButtonLink = cva({
 
 export type SidebarButtonStyleProps = PropsFromCVA<typeof sidebarButtonRecipe>;
 export type SidebarButtonProps = SidebarButtonStyleProps &
-  ButtonProps & {
+  RedirectButtonProps & {
     label: string;
     icon: IconType;
     expanded?: boolean;
@@ -80,7 +80,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = props => {
 
   const button = React.useMemo(
     () => (
-      <Button
+      <RedirectButton
         {...rest}
         icon={icon}
         iconProps={{ size: 'sm' }}

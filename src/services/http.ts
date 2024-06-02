@@ -82,9 +82,9 @@ export async function httpRequest<T extends ApiCall<any, any, ResponseBody, any,
         };
       }
       return {
-        ok: true,
+        ok: responseBody.ok,
         message: responseBody.message,
-        data: apiCall.ResponseBodySchema.parse(responseBody.data),
+        data: responseBody.ok ? apiCall.ResponseBodySchema.parse(responseBody.data) : null,
       };
     } else {
       let errorBody = await result.json();

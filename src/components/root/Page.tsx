@@ -5,7 +5,7 @@ import { css } from '@styled-system/css/css.mjs';
 import type { NavigationProps } from '~/router.js';
 import { BackIcon } from '~/icons/react-icons.js';
 import { PageTitle } from '../general/Text.js';
-import { Button } from '../general/Button.js';
+import { RedirectButton } from '../general/Button.js';
 
 export type PageProps<T extends string = ''> = {
   title?: React.ReactNode;
@@ -29,11 +29,7 @@ export const Page = <T extends string = ''>(props: React.PropsWithChildren<PageP
         <Flex justify={!title && actions ? 'end' : 'space-between'} align="center" width="full" maxWidth="container.xl">
           {(title || backTo) && (
             <Flex align="center" gap="xs" width="full">
-              {backTo && (
-                <Link {...(backTo as NavigationProps)}>
-                  <Button variant="ghost" colorVariant="white" icon={BackIcon} />
-                </Link>
-              )}
+              {backTo && <RedirectButton navigate={backTo} variant="ghost" colorVariant="white" icon={BackIcon} />}
               {title && (typeof title === 'string' ? <PageTitle text={title} /> : title)}
             </Flex>
           )}

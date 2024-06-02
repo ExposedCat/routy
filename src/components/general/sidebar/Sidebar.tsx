@@ -42,7 +42,6 @@ export const Sidebar = (): React.JSX.Element => {
         expanded={expanded}
         onClick={handleExpand}
         {...buttonOptions}
-        data-cy={'sidebar-collapse-button'}
       />
     </Flex>
   );

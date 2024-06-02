@@ -63,11 +63,9 @@ type ExtraButtonProps = PropsFromCVA<typeof customButtonStyler> & {
   } | null;
 };
 
-export type RawButtonProps = Omit<HTMLStyledProps<typeof _Button>, 'variant'> &
-  HoverColorStylesProps &
-  ExtraButtonProps;
+export type ButtonProps = Omit<HTMLStyledProps<typeof _Button>, 'variant'> & HoverColorStylesProps & ExtraButtonProps;
 
-export const RawButton = React.forwardRef<HTMLButtonElement, RawButtonProps>((props, ref) => {
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const {
     icon,
     iconProps = {},
@@ -129,7 +127,7 @@ export const RawButton = React.forwardRef<HTMLButtonElement, RawButtonProps>((pr
   );
 });
 
-type ButtonSelectProps = Customizable<Exclude<RawButtonProps['withSelector'], null | undefined>>;
+type ButtonSelectProps = Customizable<Exclude<ButtonProps['withSelector'], null | undefined>>;
 
 const ButtonSelect = (props: ButtonSelectProps) => {
   const { items, action, onSelect: _onSelect, className } = props;
@@ -153,7 +151,7 @@ const ButtonSelect = (props: ButtonSelectProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild data-cy={'dropdown-menu-trigger'}>
+      <DropdownMenuTrigger asChild>
         <div>
           <Flex className={clsx(className, styles)} onClick={event => event.preventDefault()} role="button">
             <Icon icon={SelectIcon} />
@@ -167,7 +165,7 @@ const ButtonSelect = (props: ButtonSelectProps) => {
             {items.length > 0 && <DropdownMenuSeparator />}
           </>
         )}
-        <DropdownMenuGroup data-cy={'dropdown-menu-items'}>
+        <DropdownMenuGroup>
           {items.map(item => (
             <DropdownMenuItem
               key={`button-select-item-${item.id}`}
@@ -181,14 +179,14 @@ const ButtonSelect = (props: ButtonSelectProps) => {
   );
 };
 
-export type ButtonProps<T extends string = ''> = WithNavigate<typeof RawButton, T>;
+export type RedirectButtonProps<T extends string = ''> = WithNavigate<typeof Button, T>;
 
-export const Button = <T extends string = ''>(props: ButtonProps<T>) => {
+export const RedirectButton = <T extends string = ''>(props: RedirectButtonProps<T>) => {
   const { navigate, ...rest } = props;
 
   return (
     <Navigational navigate={navigate}>
-      <RawButton variant="link" width="full" {...rest} />
+      <Button width="full" {...rest} />
     </Navigational>
   );
 };
