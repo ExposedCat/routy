@@ -1,7 +1,7 @@
 {
   "recommendations": [
+    "dbaeumer.vscode-eslint",
     "rvest.vs-code-prettier-eslint",
-    "yoavbls.pretty-ts-errors",
     "wayou.vscode-todo-highlight"
   ]
 }
