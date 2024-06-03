@@ -9,10 +9,21 @@ export function getUserTasks({ userId, db }: { userId: string; db: Database }) {
     .aggregate<Task>([
       { $match: { userId } },
       {
+        $addFields: { id: { $toString: '$_id' } },
+      },
+      { $sort: { deadline: 1 } },
+      {
         $addFields: {
-          id: { $toString: '$_id' },
+          statusOrder: {
+            $cond: [
+              { $or: [{ $eq: ['$status', 'open'] }, { $eq: ['$status', 'active'] }] },
+              1,
+              { $cond: [{ $eq: ['$status', 'closed'] }, 3, 2] },
+            ],
+          },
         },
       },
+      { $sort: { statusOrder: 1 } },
     ])
     .toArray();
 }
