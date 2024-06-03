@@ -7,7 +7,7 @@ export const Route = createFileRoute('/')({ component: HomepagePage });
 
 function HomepagePage(): React.JSX.Element {
   return (
-    <Page>
+    <Page title="Dashboard">
       <h2>Homepage</h2>
     </Page>
   );

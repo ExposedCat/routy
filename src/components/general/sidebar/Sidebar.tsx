@@ -1,8 +1,8 @@
 import React from 'react';
-import { Flex } from '@styled-system/jsx/flex.mjs';
 import { css } from '@styled-system/css/css.mjs';
 
-import { CollapseIcon, ExpandIcon } from '~/icons/react-icons.js';
+import { CollapseIcon, DashboardIcon, ExpandIcon, SettingsIcon, TasksIcon } from '~/icons/react-icons.js';
+import { Flex } from '../Flex.js';
 import { SidebarButton, type SidebarButtonStyleProps } from './SidebarButton.js';
 
 export const Sidebar = (): React.JSX.Element => {
@@ -34,8 +34,23 @@ export const Sidebar = (): React.JSX.Element => {
     align: 'left',
   };
 
+  const groupStyles = css({ width: '100%' });
+
   return (
     <Flex justify="space-between" align="center" flexDirection="column" className={sidebarStyles}>
+      <Flex direction="column" gap="sm" width="full">
+        <SidebarButton label="Dashboard" icon={DashboardIcon} expanded={expanded} redirect="/" {...buttonOptions} />
+        <Flex direction="column" className={groupStyles}>
+          <SidebarButton label="Tasks" icon={TasksIcon} expanded={expanded} redirect="/tasks" {...buttonOptions} />
+          <SidebarButton
+            label="Preferences"
+            icon={SettingsIcon}
+            expanded={expanded}
+            redirect="/settings"
+            {...buttonOptions}
+          />
+        </Flex>
+      </Flex>
       <SidebarButton
         label="Collapse"
         icon={expanded ? CollapseIcon : ExpandIcon}

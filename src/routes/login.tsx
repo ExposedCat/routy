@@ -27,10 +27,7 @@ export function LoginPage(): React.JSX.Element {
       console.log('Data', data);
       sessionService.set(data.token);
     },
-    onError: error => {
-      console.log('Error', error);
-      form.setError('email', { type: 'value', message: error.message });
-    },
+    onError: error => form.setError('email', { type: 'value', message: error.message }),
   });
 
   const handleSubmit = React.useCallback(
@@ -73,7 +70,7 @@ export function LoginPage(): React.JSX.Element {
           />
         </Form>
         <Flex gap="xxs" direction="column" align="center">
-          <RedirectButton variant="link" label="No account? Register here." navigate={{ to: '/signup' }} />
+          <RedirectButton variant="link" label="No account? Sign Up here." navigate={{ to: '/signup' }} />
           {/* <Button variant="link" label="Forgot Password?" navigate={{ to: '/reset-password' }} /> */}
         </Flex>
       </Flex>

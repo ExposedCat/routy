@@ -67,7 +67,7 @@ export function useApiAction<T extends AnyApiCall>(args: UseApiActionArgs<T>): U
     mutationFn,
     onSuccess: data =>
       data.ok
-        ? onSuccess?.(data)
+        ? onSuccess?.(data.data)
         : (onError ?? handleQueryError)({
             message: data.message,
           }),

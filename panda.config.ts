@@ -116,6 +116,35 @@ export default defineConfig({
             'xl': { value: '40px' },
             'xxl': { value: '48px' },
           },
+          container: {
+            'smaller': {
+              'xxxs': { value: '80px' },
+              'xxs': { value: '120px' },
+              'xs': { value: '290px' },
+              'sm': { value: '410px' },
+            },
+            'bigger': {
+              'xs': { value: '380px' },
+            },
+            'xxs': { value: '150px' },
+            'xs': { value: '350px' },
+            'sm': { value: '640px' },
+            'md': { value: '768px' },
+            'lg': { value: '1024px' },
+            'xl': { value: '1280px' },
+            'xxl': { value: '1440px' },
+            'content-xl': { value: '729px' },
+            'content-2xl': { value: '829px' },
+            'grid': {
+              'base-size': { value: '220px' },
+              'label-height': { value: '56px' },
+              'grid-gap': { value: '28px' },
+            },
+            'side-bar': {
+              'collapsed': { value: '65px' },
+              'expanded': { value: '210px' },
+            },
+          },
         },
         spacing: {
           'separator': { value: '10px' },
@@ -163,5 +192,5 @@ export default defineConfig({
       },
     },
   },
-  outdir: "styled-system",
+  outdir: "src/styled-system",
 });

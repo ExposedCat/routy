@@ -8,4 +8,9 @@ export {
   MdLogin as LoginIcon,
   MdVisibility as ShowIcon,
   MdVisibilityOff as HideIcon,
+  MdSpaceDashboard as DashboardIcon,
 } from 'react-icons/md';
+
+export { IoSettingsSharp as SettingsIcon } from 'react-icons/io5';
+
+export { IoMdListBox as TasksIcon } from 'react-icons/io';

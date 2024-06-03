@@ -1,6 +1,5 @@
 import type { IconType } from 'react-icons';
 import React from 'react';
-import { Link } from '@tanstack/react-router';
 import { cva } from '@styled-system/css/cva.mjs';
 
 import { clsx } from '~/utils/types.js';
@@ -40,14 +39,6 @@ const sidebarButtonRecipe = cva({
   },
 });
 
-const menuButtonLink = cva({
-  variants: {
-    layout: {
-      fullWidth: { width: 'full' },
-    },
-  },
-});
-
 export type SidebarButtonStyleProps = PropsFromCVA<typeof sidebarButtonRecipe>;
 export type SidebarButtonProps = SidebarButtonStyleProps &
   RedirectButtonProps & {
@@ -76,10 +67,9 @@ export const SidebarButton: React.FC<SidebarButtonProps> = props => {
     align,
     active,
   });
-  const linkStyles = menuButtonLink({ layout });
 
-  const button = React.useMemo(
-    () => (
+  return (
+    <Tooltip content={label} side="right">
       <RedirectButton
         {...rest}
         icon={icon}
@@ -87,20 +77,8 @@ export const SidebarButton: React.FC<SidebarButtonProps> = props => {
         colorVariant="white"
         label={expanded ? label : null}
         className={clsx(buttonStyles, className)}
+        navigate={redirect ? { to: redirect } : undefined}
       />
-    ),
-    [buttonStyles, className, expanded, icon, label, rest],
-  );
-
-  return (
-    <Tooltip content={label} side="right">
-      {redirect ? (
-        <Link to={redirect} className={linkStyles}>
-          {button}
-        </Link>
-      ) : (
-        button
-      )}
     </Tooltip>
   );
 };

@@ -12,7 +12,7 @@ import { useNullableSession } from '~/providers/session.js';
 import { useFetchResult } from './result.js';
 import type { QueryErrorType, UseFetchResult } from './result.js';
 
-const STATIC_REFETCH_INTERVAL = 5 * SECOND;
+const STATIC_REFETCH_INTERVAL = 15 * SECOND;
 
 type UseApiLoadArgs<T extends AnyLoaderApiCall> = {
   apiCall: T;

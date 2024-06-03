@@ -22,7 +22,7 @@ function Root(): React.JSX.Element {
   const navigate = useNavigate();
   const matches = useMatchesRoutes();
 
-  const [onLogin, setOnLogin] = React.useState(false);
+  const [onPublic, setOnPublic] = React.useState(false);
 
   const sessionQuery = useApiLoad({ apiCall: session_query });
 
@@ -39,7 +39,7 @@ function Root(): React.JSX.Element {
     ) {
       void navigate({ to: '/login' });
     } else {
-      setOnLogin(matches('/login', true));
+      setOnPublic(matches(PUBLIC_ROUTES, true));
     }
   }, [matches, navigate, sessionQuery.data, sessionQuery.hasData, sessionQuery.hasError]);
 
@@ -52,8 +52,8 @@ function Root(): React.JSX.Element {
     <ProvideSession value={sessionQuery.data ?? null}>
       <ProvideIconStyles>
         <Flex direction="horizontal" justify="start" align="full" className={contentStyles}>
-          {!onLogin && sessionQuery.data && <Sidebar />}
-          {(onLogin || (sessionQuery.hasData && sessionQuery.data !== null)) && <Outlet />}
+          {!onPublic && sessionQuery.data && <Sidebar />}
+          {(onPublic || (sessionQuery.hasData && sessionQuery.data !== null)) && <Outlet />}
         </Flex>
         <Toaster />
       </ProvideIconStyles>
