@@ -60,7 +60,6 @@ export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
       handleOnClose();
     },
     onError: error => {
-      console.log(error);
       toast({
         title: 'Failed to create task',
         description: error?.cause?.detail ?? (error.message || 'Unknown error'),

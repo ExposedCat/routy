@@ -11,7 +11,11 @@ export {
   MdSpaceDashboard as DashboardIcon,
   MdAdd as AddIcon,
   MdDeleteOutline as RemoveIcon,
-  MdClose as CrossIcon,
+  MdEdit as EditIcon,
+  MdCircle as DotIcon,
+  MdCheck as DoneIcon,
+  MdMoreHoriz as InProgressIcon,
+  MdAccessTime as WaitingIcon,
 } from 'react-icons/md';
 
 export { IoSettingsSharp as SettingsIcon } from 'react-icons/io5';

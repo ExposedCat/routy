@@ -22,7 +22,7 @@ export function createTask({ db, task }: { db: Database; task: PrivateTask }) {
 }
 
 export function updateTask({ taskId, db, data }: { taskId: string; db: Database; data: UpdateFilter<PrivateTask> }) {
-  return db.tasks.updateOne({ _id: new ObjectId(taskId) }, data);
+  return db.tasks.updateOne({ _id: new ObjectId(taskId) }, { $set: data });
 }
 
 export function deleteTask({ taskId, db }: { taskId: string; db: Database }) {

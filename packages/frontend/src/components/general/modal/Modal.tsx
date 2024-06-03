@@ -6,7 +6,7 @@ import type { PropsFromCVA } from '~/utils/types.js';
 import type { PropertyValue } from '~/styled-system/types/prop-type.mjs';
 import { cva } from '~/styled-system/css/cva.mjs';
 import { css } from '~/styled-system/css/css.mjs';
-import { BackIcon, CrossIcon } from '~/icons/react-icons.js';
+import { BackIcon, CloseIcon } from '~/icons/react-icons.js';
 import type { ModalContext } from '~/hooks/modal.js';
 import { Tooltip } from '../Tooltip.js';
 import { SubHeader } from '../Text.js';
@@ -187,7 +187,7 @@ export const ModalHeader = (props: React.PropsWithChildren<ModalHeaderProps>) =>
           {actions}
           {closeButton && (
             <DialogClose asChild>
-              <Button marginRight={closeButtonMargin} variant="ghost" colorVariant="white" icon={CrossIcon} />
+              <Button marginRight={closeButtonMargin} variant="ghost" colorVariant="white" icon={CloseIcon} />
             </DialogClose>
           )}
         </Flex>
