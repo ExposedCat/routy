@@ -11,7 +11,7 @@ export type TaskStatus = z.infer<typeof TaskStatusSchema>;
 export const TaskSchema = z.object({
   id: z.string(),
   title: z.string(),
-  description: z.string(),
+  description: z.string().optional().default(''),
   priority: TaskPrioritySchema,
   status: TaskStatusSchema,
   deadline: ze.dateOrString(),
