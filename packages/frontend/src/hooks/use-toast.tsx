@@ -1,6 +1,6 @@
 import React from 'react';
+import { SECOND } from '@routy/routy-shared';
 
-import { SECOND } from '~/utils/datetime.js';
 import type { UseToastProps, ToastActionElement } from '~/components/general/Toast.js';
 
 const TOAST_LIMIT = 2;

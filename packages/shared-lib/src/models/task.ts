@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { ze } from '~/services/schema.js';
+import { ze } from '../utils/schema.js';
 
 export const TaskPrioritySchema = z.enum(['low', 'normal', 'high', 'urgent']);
 export type TaskPriority = z.infer<typeof TaskPrioritySchema>;

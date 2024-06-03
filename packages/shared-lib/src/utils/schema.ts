@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { getDateWithTimezone } from '~/utils/datetime.js';
+import { getDateWithTimezone } from './datetime.js';
 
 export const ze = {
   dateOrString: (): z.ZodType<Date, any, Date | string> =>

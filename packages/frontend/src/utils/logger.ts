@@ -4,8 +4,7 @@ import type { ErrorObject } from 'serialize-error';
 import { stringify } from 'safe-stable-stringify';
 import chalk from 'chalk';
 import type { ChalkInstance } from 'chalk';
-
-import { formatDate } from './datetime.js';
+import { formatDate } from '@routy/routy-shared';
 
 declare global {
   var ENV: Record<string, string> | undefined;

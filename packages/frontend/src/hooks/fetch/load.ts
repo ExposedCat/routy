@@ -2,8 +2,8 @@ import type { z } from 'zod';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { QueryKey } from '@tanstack/react-query';
+import { SECOND } from '@routy/routy-shared';
 
-import { SECOND } from '~/utils/datetime.js';
 import { fillUrlParamsInUrl } from '~/services/url.js';
 import type { AnyLoaderApiCall } from '~/services/query.js';
 import { httpRequest } from '~/services/http.js';

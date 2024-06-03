@@ -1,11 +1,11 @@
 import type { z } from 'zod';
 import React from 'react';
 import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
+import type { CommonFailedBody } from '@routy/routy-shared';
 
 import type { FullError } from '~/utils/types.js';
 import type { AnyApiCall } from '~/services/query.js';
 import type { BackendResponse } from '~/services/http.js';
-import type { CommonFailedBody } from '~/models/common.js';
 
 export type QueryErrorType<ErrorType = CommonFailedBody> = FullError<ErrorType>;
 

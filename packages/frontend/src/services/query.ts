@@ -1,6 +1,5 @@
 import type { z } from 'zod';
-
-import { CommonFailedBodySchema } from '../models/common.js';
+import { CommonFailedBodySchema } from '@routy/routy-shared';
 
 type UrlAllowedOutputType = string | null | undefined | number | boolean | Record<string, any>;
 export type UrlAllowedOutputMap = Record<string, UrlAllowedOutputType>;

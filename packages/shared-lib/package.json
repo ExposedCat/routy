@@ -1,0 +1,22 @@
+{
+  "name": "@routy/routy-shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "ExposedCat",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.4.5",
+    "zod": "^3.23.8"
+  },
+  "type": "module",
+  "dependencies": {
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.1"
+  }
+}

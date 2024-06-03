@@ -1,5 +1,6 @@
+import { SessionSchema } from '@routy/routy-shared';
+
 import { buildLoaderApiCall } from '~/services/query.js';
-import { SessionSchema } from '~/models/session.js';
 
 const ResponseSchema = SessionSchema.nullable();
 

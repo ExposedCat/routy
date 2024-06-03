@@ -1,4 +1,5 @@
-import type { Session } from '../models/session.js';
+import type { Session } from '@routy/routy-shared';
+
 import { buildProvider } from '../hooks/provider.jsx';
 
 export const {
