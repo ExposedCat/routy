@@ -7,6 +7,7 @@ export const RequestBodySchema = TaskSchema.pick({
   title: true,
   description: true,
   deadline: true,
+  priority: true,
 });
 export type AddTaskInput = z.infer<typeof RequestBodySchema>;
 

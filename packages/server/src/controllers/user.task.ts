@@ -8,9 +8,9 @@ import { createTask, deleteTask, updateTask } from '../services/task.js';
 export function attachCreateTask(server: Express) {
   server.post(
     '/user/task',
-    async (req: TypedRequest<{ title: string; description: string; deadline: string }, { ok: true }>, res) => {
-      const { title, description, deadline } = req.body;
-      if (!title || !deadline) {
+    async (req: TypedRequest<Pick<Task, 'title' | 'description' | 'deadline' | 'priority'>, { ok: true }>, res) => {
+      const { title, description, deadline, priority } = req.body;
+      if (!title || !deadline || !priority) {
         return res.status(200).json({ ok: false, message: 'Invalid input', data: null });
       }
 
@@ -27,7 +27,7 @@ export function attachCreateTask(server: Express) {
           description,
           deadline: new Date(deadline),
           status: 'open',
-          priority: 'normal',
+          priority,
         },
       });
       return res.status(200).json({ ok: true, message: 'Task created', data: { ok: true } });

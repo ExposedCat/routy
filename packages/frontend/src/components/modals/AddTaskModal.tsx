@@ -1,4 +1,5 @@
 import React from 'react';
+import type { TaskPriority } from '@routy/routy-shared';
 
 import { add_task, RequestBodySchema } from '~/queries/add-task.js';
 import type { AddTaskInput } from '~/queries/add-task.js';
@@ -7,8 +8,10 @@ import { useRequireMultiModalContext } from '~/hooks/modal.js';
 import { useApiAction } from '~/hooks/fetch/action.js';
 import { Textarea } from '../shadow-panda/Textarea.js';
 import { ModalContextAware, ModalContent, ModalHeader } from '../general/modal/Modal.js';
+import { Switch } from '../general/Switch.js';
 import { Input } from '../general/Input.js';
 import { Form, FormField, useForm } from '../general/Form.js';
+import { Flex } from '../general/Flex.js';
 import { DateTimePicker } from '../general/DateTimePicker.js';
 import { Button } from '../general/Button.js';
 
@@ -42,6 +45,7 @@ export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
     title: '',
     description: undefined,
     deadline: undefined,
+    priority: 'normal',
   });
 
   const query = useApiAction({
@@ -50,6 +54,7 @@ export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
       toast({
         title: 'Task created',
         colorVariant: 'success',
+        duration: 'long',
       });
       context.onSuccess?.();
       handleOnClose();
@@ -87,12 +92,31 @@ export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
           label="Title"
           render={field => <Input placeholder="Enter Title" {...field} />}
         />
-        <FormField
-          form={form}
-          name="deadline"
-          label="Deadline"
-          render={field => <DateTimePicker date={field.value} setDate={field.onChange} />}
-        />
+        <Flex gap="sm">
+          <FormField
+            form={form}
+            name="deadline"
+            label="Deadline"
+            render={field => <DateTimePicker date={field.value} setDate={field.onChange} />}
+          />
+          <FormField
+            form={form}
+            name="priority"
+            label="Priority"
+            render={field => (
+              <Switch<TaskPriority>
+                value={field.value}
+                items={[
+                  { label: 'Low', value: 'low' },
+                  { label: 'Normal', value: 'normal' },
+                  { label: 'High', value: 'high' },
+                  { label: 'Urgent', value: 'urgent' },
+                ]}
+                onChange={field.onChange}
+              />
+            )}
+          />
+        </Flex>
         <FormField
           form={form}
           name="description"

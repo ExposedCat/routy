@@ -71,7 +71,11 @@ const TaskStatusButton: React.FC<TaskStatusButtonProps> = props => {
             <DropdownMenuItem onClick={event => handleSelect(event, 'open')} label="Open" icon={WaitingIcon} />
           )}
           {status !== 'active' && (
-            <DropdownMenuItem onClick={event => handleSelect(event, 'active')} label="Active" icon={InProgressIcon} />
+            <DropdownMenuItem
+              onClick={event => handleSelect(event, 'active')}
+              label="In progress"
+              icon={InProgressIcon}
+            />
           )}
           {status !== 'done' && (
             <DropdownMenuItem onClick={event => handleSelect(event, 'done')} label="Done" icon={DoneIcon} />
@@ -87,18 +91,19 @@ const TaskStatusButton: React.FC<TaskStatusButtonProps> = props => {
 
 type TaskRowProps = {
   task: Task;
+  onRemove: () => void;
   onUpdate: () => void;
   modalContext: ModalContext<TasksModalContext>;
 };
 
 const TaskRow: React.FC<TaskRowProps> = props => {
-  const { task, onUpdate, modalContext } = props;
+  const { task, onUpdate, onRemove, modalContext } = props;
 
   const { toast } = useToast();
 
   const removeQuery = useApiAction({
     apiCall: remove_task,
-    onSuccess: onUpdate,
+    onSuccess: onRemove,
     onError: error =>
       toast({
         title: 'Failed to remove task',
@@ -165,8 +170,13 @@ export function TasksPage(): React.JSX.Element {
 
   const modalContext = useNewMultiModalContext<TasksModalContext>();
 
-  const handleUpdate = React.useCallback(() => {
-    toast({ title: 'Task updated', colorVariant: 'success' });
+  const handleUpdate = React.useCallback(() => query.refetch(), [query]);
+
+  const handleRemove = React.useCallback(() => {
+    toast({
+      title: 'Task removed',
+      colorVariant: 'success',
+    });
     query.refetch();
   }, [query, toast]);
 
@@ -201,7 +211,13 @@ export function TasksPage(): React.JSX.Element {
             </TableHeader>
             <TableBody>
               {query.data.tasks.map(task => (
-                <TaskRow key={task.id} task={task} onUpdate={handleUpdate} modalContext={modalContext} />
+                <TaskRow
+                  key={task.id}
+                  task={task}
+                  onUpdate={handleUpdate}
+                  onRemove={handleRemove}
+                  modalContext={modalContext}
+                />
               ))}
             </TableBody>
           </Table>
