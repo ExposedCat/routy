@@ -42,6 +42,10 @@ export function formatDateISOInTimezone(date: Date, timezone: string): string {
   return formatInTimeZone(date, timezone, 'yyyy-MM-dd HH:mm:ss zzz');
 }
 
+export function localShortISO(date: Date): string {
+  return formatInTimeZone(date, Intl.DateTimeFormat().resolvedOptions().timeZone, `yyyy-MM-dd'T'HH:mm`);
+}
+
 export function getShortDateOrDistance(
   date: Date | null | string,
   opts?: {

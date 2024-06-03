@@ -1,7 +1,7 @@
-import { z } from 'zod';
 import React from 'react';
 
-import { add_task } from '~/queries/add-task.js';
+import { add_task, RequestBodySchema } from '~/queries/add-task.js';
+import type { AddTaskInput } from '~/queries/add-task.js';
 import { useToast } from '~/hooks/use-toast.js';
 import { useRequireMultiModalContext } from '~/hooks/modal.js';
 import { useApiAction } from '~/hooks/fetch/action.js';
@@ -9,6 +9,7 @@ import { Textarea } from '../shadow-panda/Textarea.js';
 import { ModalContextAware, ModalContent, ModalHeader } from '../general/modal/Modal.js';
 import { Input } from '../general/Input.js';
 import { Form, FormField, useForm } from '../general/Form.js';
+import { DateTimePicker } from '../general/DateTimePicker.js';
 import { Button } from '../general/Button.js';
 
 export type AddTaskModalContext = {
@@ -32,21 +33,15 @@ type ModalBodyProps = {
   handleOnClose: () => void;
 };
 
-const FormFieldsSchema = z.object({
-  title: z.string().min(1),
-  description: z.string().optional(),
-  // TODO:
-});
-type FormFields = z.infer<typeof FormFieldsSchema>;
-
 export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
   const { handleOnClose, context } = props;
 
   const { toast } = useToast();
 
-  const form = useForm<FormFields>(FormFieldsSchema, {
+  const form = useForm<AddTaskInput>(RequestBodySchema, {
     title: '',
-    description: '',
+    description: undefined,
+    deadline: undefined,
   });
 
   const query = useApiAction({
@@ -69,17 +64,7 @@ export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
     },
   });
 
-  const handleSubmit = React.useCallback(
-    (data: FormFields) => {
-      query.execute({
-        body: {
-          ...data,
-          description: data.description || undefined,
-        },
-      });
-    },
-    [query],
-  );
+  const handleSubmit = React.useCallback((data: AddTaskInput) => query.execute({ body: data }), [query]);
 
   return (
     <ModalContent>
@@ -101,6 +86,12 @@ export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
           name="title"
           label="Title"
           render={field => <Input placeholder="Enter Title" {...field} />}
+        />
+        <FormField
+          form={form}
+          name="deadline"
+          label="Deadline"
+          render={field => <DateTimePicker date={field.value} setDate={field.onChange} />}
         />
         <FormField
           form={form}

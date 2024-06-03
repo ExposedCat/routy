@@ -6,31 +6,33 @@ import { getUserById } from '../services/user.js';
 import { createTask, deleteTask, updateTask } from '../services/task.js';
 
 export function attachCreateTask(server: Express) {
-  server.post('/user/task', async (req: TypedRequest<{ title: string; description: string }, { ok: true }>, res) => {
-    const { title, description } = req.body;
-    if (!title) {
-      return res.status(200).json({ ok: false, message: 'Invalid input', data: null });
-    }
+  server.post(
+    '/user/task',
+    async (req: TypedRequest<{ title: string; description: string; deadline: string }, { ok: true }>, res) => {
+      const { title, description, deadline } = req.body;
+      if (!title || !deadline) {
+        return res.status(200).json({ ok: false, message: 'Invalid input', data: null });
+      }
 
-    const user = req.userId ? await getUserById(req.userId, server.locals.database) : null;
-    if (!user) {
-      return res.status(200).json({ ok: false, message: 'User not found', data: null });
-    }
+      const user = req.userId ? await getUserById(req.userId, server.locals.database) : null;
+      if (!user) {
+        return res.status(200).json({ ok: false, message: 'User not found', data: null });
+      }
 
-    await createTask({
-      db: server.locals.database,
-      task: {
-        userId: user._id.toString(),
-        title,
-        description,
-        // TODO:
-        status: 'open',
-        priority: 'normal',
-        deadline: new Date(),
-      },
-    });
-    return res.status(200).json({ ok: true, message: 'Task created', data: { ok: true } });
-  });
+      await createTask({
+        db: server.locals.database,
+        task: {
+          userId: user._id.toString(),
+          title,
+          description,
+          deadline: new Date(deadline),
+          status: 'open',
+          priority: 'normal',
+        },
+      });
+      return res.status(200).json({ ok: true, message: 'Task created', data: { ok: true } });
+    },
+  );
 }
 
 export function attachRemoveTask(server: Express) {

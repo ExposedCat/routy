@@ -6,6 +6,7 @@ import { buildApiCall } from '~/services/query.js';
 export const RequestBodySchema = TaskSchema.pick({
   title: true,
   description: true,
+  deadline: true,
 });
 export type AddTaskInput = z.infer<typeof RequestBodySchema>;
 
