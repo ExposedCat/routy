@@ -10,7 +10,7 @@ export function getUserTasks({ userId, db }: { userId: string; db: Database }) {
       { $match: { userId } },
       {
         $addFields: {
-          id: { $toString: '$id' },
+          id: { $toString: '$_id' },
         },
       },
     ])

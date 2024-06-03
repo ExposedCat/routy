@@ -11,7 +11,7 @@ export type TaskStatus = z.infer<typeof TaskStatusSchema>;
 export const PrivateTaskSchema = z.object({
   userId: z.string(),
   title: z.string(),
-  description: z.string().optional().default(''),
+  description: z.string().nullish(),
   priority: TaskPrioritySchema,
   status: TaskStatusSchema,
   deadline: ze.dateOrString(),

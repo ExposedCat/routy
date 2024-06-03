@@ -2,7 +2,8 @@ import express from 'express';
 
 import type { Database } from '../types/database/database.js';
 import { attachAuth } from '../middlewares/auth.js';
-import { attachGetTasks } from '../controllers/tasks.js';
+import { attachGetTasks } from '../controllers/user.tasks.js';
+import { attachCreateTask } from '../controllers/user.task.js';
 import { attachGetSession } from '../controllers/session.js';
 import { attachRegister } from '../controllers/register.js';
 import { attachLogin } from '../controllers/login.js';
@@ -23,6 +24,7 @@ export function createServer(port: number, database: Database) {
 
   attachAuth(server);
 
+  attachCreateTask(server);
   attachGetSession(server);
   attachRegister(server);
   attachLogin(server);

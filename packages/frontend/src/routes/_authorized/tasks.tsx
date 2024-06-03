@@ -3,10 +3,15 @@ import { createFileRoute } from '@tanstack/react-router';
 import { getShortDateTime } from '@routy/routy-shared';
 import type { Task } from '@routy/routy-shared';
 
-import { useTasks } from '~/providers/tasks.js';
+import { get_tasks } from '~/queries/tasks.js';
 import { AddIcon, RemoveIcon } from '~/icons/react-icons.js';
 import { ProvideMultiModalContext, useNewMultiModalContext, type ModalContext } from '~/hooks/modal.js';
+import { useApiLoad } from '~/hooks/fetch/load.js';
+import { TableSkeleton } from '~/components/skeletons/Table.js';
+import { QueryErrorHandler } from '~/components/root/QueryErrorHandler.js';
 import { Page } from '~/components/root/Page.js';
+import { AddTaskModel } from '~/components/modals/AddTaskModal.js';
+import type { AddTaskModalContext } from '~/components/modals/AddTaskModal.js';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/general/table/Table.js';
 import { ConfirmationModal, type ConfirmationModalContext } from '~/components/general/modal/ConfirmationModal.js';
 import { Flex } from '~/components/general/Flex.js';
@@ -14,15 +19,16 @@ import { Button } from '~/components/general/Button.js';
 
 export const Route = createFileRoute('/_authorized/tasks')({ component: TasksPage });
 
+type TasksModalContext = ConfirmationModalContext & AddTaskModalContext;
+
 type TaskRowProps = {
   task: Task;
   onRemove: () => void;
-  confirmationContext: ModalContext<ConfirmationModalContext>;
-  // modalContext: ModalContext<AppConfigurationTemplateModalContext>;
+  modalContext: ModalContext<TasksModalContext>;
 };
 
 const TaskRow: React.FC<TaskRowProps> = props => {
-  const { task, onRemove, confirmationContext } = props;
+  const { task, onRemove, modalContext } = props;
 
   // const removeQuery = useApiAction({
   //   apiCall: api_app_config_templates_$configTemplateId_remove,
@@ -35,13 +41,13 @@ const TaskRow: React.FC<TaskRowProps> = props => {
   const handleRemove = React.useCallback(
     (event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
       event.stopPropagation();
-      confirmationContext.open('confirm', {
+      modalContext.open('confirm', {
         header: 'Remove Task',
         description: `Are you sure you want to remove this task?`,
         onConfirm: () => onRemove(), //removeQuery.execute({ body: undefined }),
       });
     },
-    [confirmationContext, onRemove],
+    [modalContext, onRemove],
   );
 
   const handleRowClick = React.useCallback(() => {
@@ -65,29 +71,47 @@ const TaskRow: React.FC<TaskRowProps> = props => {
 };
 
 export function TasksPage(): React.JSX.Element {
-  const tasks = useTasks();
+  const query = useApiLoad({ apiCall: get_tasks });
 
-  const confirmationContext = useNewMultiModalContext<ConfirmationModalContext>();
+  const modalContext = useNewMultiModalContext<TasksModalContext>();
 
   return (
     <>
-      <ProvideMultiModalContext context={confirmationContext}>
+      <ProvideMultiModalContext context={modalContext}>
+        <AddTaskModel />
         <ConfirmationModal />
       </ProvideMultiModalContext>
-      <Page title="Tasks" actions={<Button label="Add Task" icon={AddIcon} />}>
-        <Table empty={tasks.length === 0} entity="tasks">
-          <TableHeader>
-            <TableHead>Title</TableHead>
-            <TableHead>Deadline</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>{/* Remove */}</TableHead>
-          </TableHeader>
-          <TableBody>
-            {tasks.map(task => (
-              <TaskRow key={task.id} task={task} onRemove={() => {}} confirmationContext={confirmationContext} />
-            ))}
-          </TableBody>
-        </Table>
+      <Page
+        title="Tasks"
+        actions={
+          <Button
+            label="Add Task"
+            icon={AddIcon}
+            onClick={() =>
+              modalContext.open('add', {
+                onSuccess: query.refetch,
+              })
+            }
+          />
+        }
+      >
+        {!query.finished && <TableSkeleton />}
+        {query.hasData && (
+          <Table empty={query.data.tasks.length === 0} entity="tasks">
+            <TableHeader>
+              <TableHead>Title</TableHead>
+              <TableHead>Deadline</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>{/* Remove */}</TableHead>
+            </TableHeader>
+            <TableBody>
+              {query.data.tasks.map(task => (
+                <TaskRow key={task.id} task={task} onRemove={query.refetch} modalContext={modalContext} />
+              ))}
+            </TableBody>
+          </Table>
+        )}
+        <QueryErrorHandler query={query} />
       </Page>
     </>
   );
