@@ -23,6 +23,13 @@ export default defineConfig({
   include: ["./src/**/*.{js,jsx,ts,tsx}", "./pages/**/*.{js,jsx,ts,tsx}"],
   exclude: [],
   globalCss,
+  staticCss: {
+    recipes: {
+      // Load toast variant styles since it cannot be statically analyzed
+      toast: [{ variant: ['*'] }],
+      button: [{ variant: ['*'], size: ['*'] }],
+    },
+  },
   theme: {
     extend: {
       tokens: {
@@ -193,4 +200,5 @@ export default defineConfig({
     },
   },
   outdir: "src/styled-system",
+  forceConsistentTypeExtension: true,
 });

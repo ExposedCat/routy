@@ -1,9 +1,9 @@
 import React from 'react';
-import { styled } from '@styled-system/jsx/factory.mjs';
 import { cva } from '@styled-system/css/cva.mjs';
 
 import { clsx } from '~/utils/types.js';
 import type { PropsFromCVA, Customizable } from '~/utils/types.js';
+import { styled } from '../../styled-system/jsx/factory.mjs';
 
 const styledText = cva({
   variants: {

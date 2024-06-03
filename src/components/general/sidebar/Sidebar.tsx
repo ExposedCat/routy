@@ -41,12 +41,20 @@ export const Sidebar = (): React.JSX.Element => {
       <Flex direction="column" gap="sm" width="full">
         <SidebarButton label="Dashboard" icon={DashboardIcon} expanded={expanded} redirect="/" {...buttonOptions} />
         <Flex direction="column" className={groupStyles}>
-          <SidebarButton label="Tasks" icon={TasksIcon} expanded={expanded} redirect="/tasks" {...buttonOptions} />
+          <SidebarButton
+            label="Tasks"
+            icon={TasksIcon}
+            expanded={expanded}
+            redirect="/tasks"
+            position="top"
+            {...buttonOptions}
+          />
           <SidebarButton
             label="Preferences"
             icon={SettingsIcon}
             expanded={expanded}
             redirect="/settings"
+            position="bottom"
             {...buttonOptions}
           />
         </Flex>
