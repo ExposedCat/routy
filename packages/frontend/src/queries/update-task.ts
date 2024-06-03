@@ -3,17 +3,14 @@ import { TaskSchema } from '@routy/routy-shared';
 
 import { buildApiCall } from '~/services/query.js';
 
-export const RequestBodySchema = TaskSchema.pick({
-  id: true,
-  status: true,
-});
-export type AddTaskInput = z.infer<typeof RequestBodySchema>;
+export const RequestBodySchema = TaskSchema.omit({ userId: true }).partial();
+export type UpdateTaskInput = z.infer<typeof RequestBodySchema>;
 
 const ResponseBodySchema = z.object({ ok: z.literal(true) });
 
-export const update_task_status = buildApiCall({
+export const update_task = buildApiCall({
   HttpMethod: 'post',
-  PathTemplate: '/user/task/status',
+  PathTemplate: '/user/task/details',
   RequestBodySchema,
   ResponseBodySchema,
   UrlParamsSchema: undefined,

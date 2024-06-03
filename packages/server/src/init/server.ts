@@ -3,7 +3,7 @@ import express from 'express';
 import type { Database } from '../types/database/database.js';
 import { attachAuth } from '../middlewares/auth.js';
 import { attachGetTasks } from '../controllers/user.tasks.js';
-import { attachCreateTask, attachRemoveTask, attachUpdateTaskStatus } from '../controllers/user.task.js';
+import { attachCreateTask, attachRemoveTask, attachUpdateTask } from '../controllers/user.task.js';
 import { attachGetSession } from '../controllers/session.js';
 import { attachRegister } from '../controllers/register.js';
 import { attachLogin } from '../controllers/login.js';
@@ -29,7 +29,7 @@ export function createServer(port: number, database: Database) {
 
   attachCreateTask(server);
   attachRemoveTask(server);
-  attachUpdateTaskStatus(server);
+  attachUpdateTask(server);
 
   attachGetSession(server);
   attachGetTasks(server);

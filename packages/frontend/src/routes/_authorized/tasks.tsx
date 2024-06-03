@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { getShortDateTime } from '@routy/routy-shared';
 import type { Task, TaskStatus } from '@routy/routy-shared';
 
-import { update_task_status } from '~/queries/update-task-status.js';
+import { update_task } from '~/queries/update-task.js';
 import { get_tasks } from '~/queries/tasks.js';
 import { remove_task } from '~/queries/remove-task.js';
 import { AddIcon, CloseIcon, DoneIcon, InProgressIcon, RemoveIcon, WaitingIcon } from '~/icons/react-icons.js';
@@ -15,6 +15,7 @@ import { TableSkeleton } from '~/components/skeletons/Table.js';
 import { DropdownMenu, DropdownMenuGroup, DropdownMenuTrigger } from '~/components/shadow-panda/DropdownMenu.js';
 import { QueryErrorHandler } from '~/components/root/QueryErrorHandler.js';
 import { Page } from '~/components/root/Page.js';
+import { TaskDetailModel, type TaskDetailModalContext } from '~/components/modals/TaskDetailModal.js';
 import { AddTaskModel } from '~/components/modals/AddTaskModal.js';
 import type { AddTaskModalContext } from '~/components/modals/AddTaskModal.js';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/general/table/Table.js';
@@ -25,7 +26,7 @@ import { Button } from '~/components/general/Button.js';
 
 export const Route = createFileRoute('/_authorized/tasks')({ component: TasksPage });
 
-type TasksModalContext = ConfirmationModalContext & AddTaskModalContext;
+type TasksModalContext = ConfirmationModalContext & AddTaskModalContext & TaskDetailModalContext;
 
 type TaskStatusButtonProps = {
   status: TaskStatus;
@@ -125,8 +126,8 @@ const TaskRow: React.FC<TaskRowProps> = props => {
     [modalContext, removeQuery, task.id],
   );
 
-  const updateStatusQuery = useApiAction({
-    apiCall: update_task_status,
+  const updateQuery = useApiAction({
+    apiCall: update_task,
     onSuccess: onUpdate,
     onError: error =>
       toast({
@@ -138,13 +139,13 @@ const TaskRow: React.FC<TaskRowProps> = props => {
   });
 
   const handleUpdateStatus = React.useCallback(
-    (status: TaskStatus) => updateStatusQuery.execute({ body: { id: task.id, status } }),
-    [task.id, updateStatusQuery],
+    (status: TaskStatus) => updateQuery.execute({ body: { id: task.id, status } }),
+    [task, updateQuery],
   );
 
   const handleRowClick = React.useCallback(() => {
-    // modalContext.open('info', { template });
-  }, []);
+    modalContext.open('detail', { task, onUpdate });
+  }, [modalContext, onUpdate, task]);
 
   return (
     <TableRow key={task.id} onClick={handleRowClick}>
@@ -185,6 +186,7 @@ export function TasksPage(): React.JSX.Element {
       <ProvideMultiModalContext context={modalContext}>
         <AddTaskModel />
         <ConfirmationModal />
+        <TaskDetailModel />
       </ProvideMultiModalContext>
       <Page
         title="Tasks"

@@ -47,17 +47,23 @@ export function attachRemoveTask(server: Express) {
   });
 }
 
-export function attachUpdateTaskStatus(server: Express) {
+export function attachUpdateTask(server: Express) {
   server.post(
-    '/user/task/status',
-    async (req: TypedRequest<{ id: string; status: Task['status'] }, { ok: true }>, res) => {
-      const { id, status } = req.body;
-      if (!id || !status) {
+    '/user/task/details',
+    async (
+      req: TypedRequest<
+        Partial<Pick<Task, 'id' | 'title' | 'description' | 'deadline' | 'priority' | 'status'>>,
+        { ok: true }
+      >,
+      res,
+    ) => {
+      const { id, ...details } = req.body;
+      if (!id) {
         return res.status(200).json({ ok: false, message: 'Invalid input', data: null });
       }
 
-      await updateTask({ db: server.locals.database, taskId: id, data: { status } });
-      return res.status(200).json({ ok: true, message: 'Task status updated', data: { ok: true } });
+      await updateTask({ db: server.locals.database, taskId: id, data: details });
+      return res.status(200).json({ ok: true, message: 'Task updated', data: { ok: true } });
     },
   );
 }
