@@ -4,9 +4,10 @@ import type { Database } from '../types/database/database.js';
 import { attachAuth } from '../middlewares/auth.js';
 import { attachGetTasks } from '../controllers/user.tasks.js';
 import { attachCreateTask, attachRemoveTask, attachUpdateTask } from '../controllers/user.task.js';
-import { attachGetSession } from '../controllers/session.js';
+import { attachUpdateUser } from '../controllers/update-user.js';
 import { attachRegister } from '../controllers/register.js';
 import { attachLogin } from '../controllers/login.js';
+import { attachGetSession } from '../controllers/get-session.js';
 
 export function createServer(port: number, database: Database) {
   const server = express();
@@ -30,6 +31,8 @@ export function createServer(port: number, database: Database) {
   attachCreateTask(server);
   attachRemoveTask(server);
   attachUpdateTask(server);
+
+  attachUpdateUser(server);
 
   attachGetSession(server);
   attachGetTasks(server);

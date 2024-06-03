@@ -28,5 +28,5 @@ export function createUser({
 }
 
 export function updateUser({ userId, db, data }: { userId: string; db: Database; data: UpdateFilter<PrivateUser> }) {
-  return db.users.updateOne({ _id: new ObjectId(userId) }, data);
+  return db.users.updateOne({ _id: new ObjectId(userId) }, { $set: data });
 }

@@ -1,12 +1,8 @@
 import type { Express } from 'express';
+import type { GetSessionResponse } from '@routy/routy-shared';
 
 import type { TypedRequest } from '../types/server.js';
 import { getUserById } from '../services/user.js';
-
-export type GetSessionResponse = {
-  userId: string;
-  userName: string;
-};
 
 export function attachGetSession(server: Express) {
   server.get('/session', async (req: TypedRequest<void, GetSessionResponse>, res) => {
@@ -23,8 +19,8 @@ export function attachGetSession(server: Express) {
       ok: true,
       message: 'User found',
       data: {
-        userId: user._id.toString(),
-        userName: user.name,
+        name: user.name,
+        email: user.email,
       },
     });
   });
