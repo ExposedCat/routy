@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 
 import { Page } from '~/components/root/Page.js';
 
-export const Route = createFileRoute('/settings')({ component: SettingsPage });
+export const Route = createFileRoute('/_authorized/settings')({ component: SettingsPage });
 
 export function SettingsPage(): React.JSX.Element {
   // const session = useNullableSession();

@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { getShortDateTime } from '@routy/routy-shared';
 import type { Task } from '@routy/routy-shared';
 
+import { useTasks } from '~/providers/tasks.js';
 import { AddIcon, RemoveIcon } from '~/icons/react-icons.js';
 import { ProvideMultiModalContext, useNewMultiModalContext, type ModalContext } from '~/hooks/modal.js';
 import { Page } from '~/components/root/Page.js';
@@ -11,7 +12,7 @@ import { ConfirmationModal, type ConfirmationModalContext } from '~/components/g
 import { Flex } from '~/components/general/Flex.js';
 import { Button } from '~/components/general/Button.js';
 
-export const Route = createFileRoute('/tasks')({ component: TasksPage });
+export const Route = createFileRoute('/_authorized/tasks')({ component: TasksPage });
 
 type TaskRowProps = {
   task: Task;
@@ -64,50 +65,9 @@ const TaskRow: React.FC<TaskRowProps> = props => {
 };
 
 export function TasksPage(): React.JSX.Element {
-  const confirmationContext = useNewMultiModalContext<ConfirmationModalContext>();
+  const tasks = useTasks();
 
-  const tasks: Task[] = [
-    {
-      id: '1',
-      title: 'Test',
-      deadline: new Date(),
-      description: 'This is an important task',
-      priority: 'normal',
-      status: 'open',
-    },
-    {
-      id: '2',
-      title: 'Test',
-      deadline: new Date(),
-      description: 'This is an important task',
-      priority: 'normal',
-      status: 'open',
-    },
-    {
-      id: '3',
-      title: 'Test',
-      deadline: new Date(),
-      description: 'This is an important task',
-      priority: 'normal',
-      status: 'open',
-    },
-    {
-      id: '4',
-      title: 'Test',
-      deadline: new Date(),
-      description: 'This is an important task',
-      priority: 'normal',
-      status: 'open',
-    },
-    {
-      id: '5',
-      title: 'Test',
-      deadline: new Date(),
-      description: 'This is an important task',
-      priority: 'normal',
-      status: 'open',
-    },
-  ];
+  const confirmationContext = useNewMultiModalContext<ConfirmationModalContext>();
 
   return (
     <>

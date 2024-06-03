@@ -16,6 +16,7 @@ export function createDatabase() {
       const db = client.db(dbName);
       return {
         users: db.collection('users'),
+        tasks: db.collection('tasks'),
       };
     },
   };

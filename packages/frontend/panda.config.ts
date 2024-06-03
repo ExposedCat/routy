@@ -152,6 +152,50 @@ export default defineConfig({
               'expanded': { value: '210px' },
             },
           },
+          skeleton: {
+            'height': { value: '40px' },
+            'width': { value: 'full' },
+            'button': {
+              'width': { value: '150px' },
+              'height': { value: '{sizes.skeleton.height}' },
+            },
+            'input': {
+              'width': { value: '230px' },
+              'height': { value: '{sizes.skeleton.height}' },
+            },
+            'textarea': {
+              'width': { value: '{sizes.skeleton.width}' },
+              'height': { value: '80px' },
+            },
+            'avatar': {
+              'width': { value: '{sizes.skeleton.height}' },
+              'height': { value: '{sizes.skeleton.height}' },
+            },
+            'grid': {
+              'width': {
+                'xs': { value: '32px' },
+                'sm': { value: '64px' },
+                'md': { value: '128px' },
+                'lg': { value: '256px' },
+                'xl': { value: '512px' },
+              },
+              'height': {
+                'xs': { value: '32px' },
+                'sm': { value: '64px' },
+                'md': { value: '128px' },
+                'lg': { value: '256px' },
+                'xl': { value: '512px' },
+              },
+            },
+            'table': {
+              'height': {
+                'sm': { value: '32px' },
+                'md': { value: '64px' },
+                'lg': { value: '128px' },
+                'xl': { value: '256px' },
+              },
+            },
+          },
         },
         spacing: {
           'separator': { value: '10px' },

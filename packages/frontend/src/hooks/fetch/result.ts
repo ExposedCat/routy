@@ -98,7 +98,7 @@ export function useFetchResult<T extends AnyApiCall>(
               error: null,
               hasData: true,
               finished: true,
-              data: query.data,
+              data: query.data.data,
             }
           : {
               isIdle: false,
@@ -148,7 +148,7 @@ export function useFetchResult<T extends AnyApiCall>(
         hasError: false,
         hasData: true,
         error: null,
-        data: query.data,
+        data: query.data.data,
       };
     }
 

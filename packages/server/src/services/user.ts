@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 import type { UpdateFilter } from 'mongodb';
+import type { PrivateUser } from '@routy/routy-shared';
 
-import type { User } from '../types/database/user.js';
 import type { Database } from '../types/database/database.js';
 
 export function getUserByEmail({ db, email }: { email: string; db: Database }) {
@@ -27,6 +27,6 @@ export function createUser({
   return db.users.insertOne({ name, password, email });
 }
 
-export function updateUser({ userId, db, data }: { userId: string; db: Database; data: UpdateFilter<User> }) {
+export function updateUser({ userId, db, data }: { userId: string; db: Database; data: UpdateFilter<PrivateUser> }) {
   return db.users.updateOne({ _id: new ObjectId(userId) }, data);
 }

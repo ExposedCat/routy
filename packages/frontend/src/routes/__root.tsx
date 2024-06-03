@@ -4,7 +4,7 @@ import { Flex } from '@styled-system/jsx/flex.mjs';
 import { css } from '@styled-system/css/css.mjs';
 
 import { PUBLIC_ROUTES } from '~/services/routing.js';
-import { session_query } from '~/queries/session.js';
+import { get_session } from '~/queries/session.js';
 import { ProvideSession } from '~/providers/session.js';
 import { ProvideIconStyles } from '~/icons/style-provider.js';
 import { useMatchesRoutes } from '~/hooks/route.js';
@@ -24,7 +24,7 @@ function Root(): React.JSX.Element {
 
   const [onPublic, setOnPublic] = React.useState(false);
 
-  const sessionQuery = useApiLoad({ apiCall: session_query });
+  const sessionQuery = useApiLoad({ apiCall: get_session });
 
   React.useEffect(() => {
     const refetch = () => sessionQuery.refetch();

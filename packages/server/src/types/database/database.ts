@@ -1,7 +1,7 @@
 import type { Collection } from 'mongodb';
-
-import type { User } from './user.js';
+import type { PrivateTask, PrivateUser } from '@routy/routy-shared';
 
 export type Database = {
-  users: Collection<User>;
+  users: Collection<PrivateUser>;
+  tasks: Collection<PrivateTask>;
 };

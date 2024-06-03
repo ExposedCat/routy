@@ -6,13 +6,13 @@ import { BackIcon } from '~/icons/react-icons.js';
 import { PageTitle } from '../general/Text.js';
 import { RedirectButton } from '../general/Button.js';
 
-export type PageProps<T extends string = ''> = {
+export type PageProps<T extends string = ''> = React.PropsWithChildren<{
   title?: React.ReactNode;
   actions?: React.ReactNode;
   backTo?: NavigationProps<T>;
-};
+}>;
 
-export const Page = <T extends string = ''>(props: React.PropsWithChildren<PageProps<T>>): React.JSX.Element => {
+export const Page = <T extends string = ''>(props: PageProps<T>): React.JSX.Element => {
   const { title, actions, children, backTo } = props;
 
   const pageStyles = css({

@@ -23,10 +23,7 @@ export function LoginPage(): React.JSX.Element {
 
   const query = useApiAction({
     apiCall: login_query,
-    onSuccess: data => {
-      console.log('Data', data);
-      sessionService.set(data.token);
-    },
+    onSuccess: data => sessionService.set(data.token),
     onError: error => form.setError('email', { type: 'value', message: error.message }),
   });
 

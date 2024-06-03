@@ -8,7 +8,7 @@
     "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --rule 'no-warning-comments: off' --fix",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --rule 'no-warning-comments: off'",
     "start:fe": "pnpm --filter @routy/routy-frontend run preview",
-    "dev:fe": "pnpm --filter @routy/routy-frontend run preview",
+    "dev:fe": "pnpm --filter @routy/routy-frontend run dev",
     "start:server": "pnpm --filter @routy/routy-server start",
     "build:shared": "pnpm --filter @routy/routy-shared run build",
     "build:fe": "pnpm --filter @routy/routy-frontend run build",

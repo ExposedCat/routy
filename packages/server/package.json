@@ -4,8 +4,8 @@
   "description": "HTTP API for Routy app",
   "main": "build/index.js",
   "scripts": {
-    "compile": "clear && npx tsc",
-    "start": "pnpm compile && node ."
+    "build": "tsc",
+    "start": "pnpm build && node ."
   },
   "repository": {
     "type": "git",

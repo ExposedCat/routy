@@ -4,7 +4,7 @@ import { buildLoaderApiCall } from '~/services/query.js';
 
 const ResponseSchema = SessionSchema.nullable();
 
-export const session_query = buildLoaderApiCall({
+export const get_session = buildLoaderApiCall({
   HttpMethod: 'get',
   PathTemplate: '/session',
   ResponseBodySchema: ResponseSchema,
