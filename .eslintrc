@@ -187,8 +187,9 @@
   },
   "parserOptions": {
     "project": [
-      "./tsconfig.json",
-      "./tsconfig.node.json"
+      "./packages/frontend/tsconfig.json",
+      "./packages/frontend/tsconfig.node.json",
+      "./packages/server/tsconfig.json"
     ]
   }
 }
