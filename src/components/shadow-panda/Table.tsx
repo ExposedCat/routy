@@ -25,7 +25,7 @@ export const TableBody = styled('tbody', tableBody);
 export const TableFooter = styled('tfoot', tableFooter);
 export const _TableHead = styled('th', tableHead);
 export const _TableRow = styled('tr', tableRow);
-export const TableCell = styled('td', tableCell);
+export const _TableCell = styled('td', tableCell);
 export const TableCaption = styled('caption', tableCaption);
 
-export type TableCellProps = React.ComponentProps<typeof TableCell>;
+export type _TableCellProps = React.ComponentProps<typeof _TableCell>;

@@ -4,7 +4,7 @@ import React from 'react';
 import { dialog } from '@styled-system/recipes/dialog.mjs';
 import { styled } from '@styled-system/jsx/factory.mjs';
 import { createStyleContext } from '@shadow-panda/style-context';
-import DialogPrimitive from '@radix-ui/react-dialog';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 
 import type { Nested, Provider } from '~/utils/types.js';
 

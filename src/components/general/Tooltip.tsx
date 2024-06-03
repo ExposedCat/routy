@@ -6,11 +6,11 @@ import { clsx } from '~/utils/types.js';
 import { _Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../shadow-panda/_Tooltip.js';
 import { Label } from './Text.js';
 
-export type TooltipButtonProps = Omit<React.ComponentProps<typeof _Tooltip>, 'content'> & {
-  side: React.ComponentProps<typeof TooltipContent>['side'];
-  content: React.ReactNode;
-  className?: string;
-};
+export type TooltipButtonProps = Omit<React.ComponentProps<typeof _Tooltip>, 'content'> &
+  Pick<React.ComponentProps<typeof TooltipContent>, 'side'> & {
+    content: React.ReactNode;
+    className?: string;
+  };
 
 export const Tooltip = React.forwardRef<HTMLDivElement, TooltipButtonProps>((props, ref): React.JSX.Element => {
   const { className, content, children, side = 'top', ...rest } = props;

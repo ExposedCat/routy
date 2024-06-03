@@ -9,6 +9,9 @@ export {
   MdVisibility as ShowIcon,
   MdVisibilityOff as HideIcon,
   MdSpaceDashboard as DashboardIcon,
+  MdAdd as AddIcon,
+  MdDeleteOutline as RemoveIcon,
+  MdClose as CrossIcon,
 } from 'react-icons/md';
 
 export { IoSettingsSharp as SettingsIcon } from 'react-icons/io5';
