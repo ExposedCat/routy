@@ -27,6 +27,7 @@ export const Sidebar = (): React.JSX.Element => {
     borderTop: 'none',
     borderRight: 'border.base',
     flexShrink: 0,
+    transition: 'all',
   });
 
   const buttonOptions: SidebarButtonStyleProps = {
