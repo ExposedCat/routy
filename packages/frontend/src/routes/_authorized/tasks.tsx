@@ -4,18 +4,18 @@ import { createFileRoute } from '@tanstack/react-router';
 import { getShortDateTime } from '@routy/routy-shared';
 import type { Task, TaskStatus } from '@routy/routy-shared';
 
-import { readableStatus, statusIcon } from '~/services/task.js';
 import { update_task } from '~/queries/update-task.js';
 import { get_tasks } from '~/queries/tasks.js';
 import { remove_task } from '~/queries/remove-task.js';
-import { AddIcon, CloseIcon, DoneIcon, InProgressIcon, RemoveIcon, WaitingIcon } from '~/icons/react-icons.js';
+import { get_dashboard } from '~/queries/get-dashboard.js';
+import { AddIcon, RemoveIcon } from '~/icons/react-icons.js';
 import { useToast } from '~/hooks/use-toast.js';
 import { useUpdateSearchParams } from '~/hooks/route.js';
 import { ProvideMultiModalContext, useNewMultiModalContext, type ModalContext } from '~/hooks/modal.js';
 import { useApiLoad } from '~/hooks/fetch/load.js';
 import { useApiAction } from '~/hooks/fetch/action.js';
+import { TaskStatusButton } from '~/components/tasks/TaskStatusButton.js';
 import { TableSkeleton } from '~/components/skeletons/Table.js';
-import { DropdownMenu, DropdownMenuGroup, DropdownMenuTrigger } from '~/components/shadow-panda/DropdownMenu.js';
 import { QueryErrorHandler } from '~/components/root/QueryErrorHandler.js';
 import { Page } from '~/components/root/Page.js';
 import { TaskDetailModel, type TaskDetailModalContext } from '~/components/modals/TaskDetailModal.js';
@@ -24,7 +24,6 @@ import type { AddTaskModalContext } from '~/components/modals/AddTaskModal.js';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/general/table/Table.js';
 import { ConfirmationModal, type ConfirmationModalContext } from '~/components/general/modal/ConfirmationModal.js';
 import { Flex } from '~/components/general/Flex.js';
-import { DropdownMenuContent, DropdownMenuItem } from '~/components/general/DropdownMenu.js';
 import { Button } from '~/components/general/Button.js';
 
 export const Route = createFileRoute('/_authorized/tasks')({
@@ -33,63 +32,6 @@ export const Route = createFileRoute('/_authorized/tasks')({
 });
 
 type TasksModalContext = ConfirmationModalContext & AddTaskModalContext & TaskDetailModalContext;
-
-type TaskStatusButtonProps = {
-  status: TaskStatus;
-  onChange: (status: TaskStatus) => void;
-};
-
-const TaskStatusButton: React.FC<TaskStatusButtonProps> = props => {
-  const { status } = props;
-
-  const handleSelect = React.useCallback(
-    (event: React.MouseEvent, newStatus: TaskStatus) => {
-      event.stopPropagation();
-      props.onChange(newStatus);
-    },
-    [props],
-  );
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          label={
-            status === 'active' ? 'In progress' : status === 'closed' ? 'Closed' : status === 'open' ? 'Open' : 'Done'
-          }
-          colorVariant={
-            status === 'active' ? 'active' : status === 'closed' ? 'error' : status === 'open' ? 'warning' : 'success'
-          }
-          icon={
-            status === 'active'
-              ? InProgressIcon
-              : status === 'closed'
-                ? CloseIcon
-                : status === 'open'
-                  ? WaitingIcon
-                  : DoneIcon
-          }
-        />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent maxHeight="container.smaller.sm" overflowY="auto">
-        <DropdownMenuGroup>
-          {(['open', 'active', 'done', 'closed'] as TaskStatus[]).map(
-            newStatus =>
-              newStatus !== status && (
-                <DropdownMenuItem
-                  key={newStatus}
-                  onClick={event => handleSelect(event, newStatus)}
-                  label={readableStatus(newStatus)}
-                  icon={statusIcon(newStatus)}
-                />
-              ),
-          )}
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
 
 type TaskRowProps = {
   task: Task;
@@ -174,8 +116,12 @@ function TasksPage(): React.JSX.Element {
   const modalContext = useNewMultiModalContext<TasksModalContext>();
 
   const query = useApiLoad({ apiCall: get_tasks });
+  const dashboardQuery = useApiLoad({ apiCall: get_dashboard, fetchImmediately: false });
 
-  const handleUpdate = React.useCallback(() => query.refetch(), [query]);
+  const handleUpdate = React.useCallback(() => {
+    query.refetch();
+    dashboardQuery.refetch();
+  }, [dashboardQuery, query]);
 
   const handleRemove = React.useCallback(() => {
     toast({

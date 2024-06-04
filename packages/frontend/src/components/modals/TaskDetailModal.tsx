@@ -1,11 +1,12 @@
 import React from 'react';
-import type { Task, TaskPriority } from '@routy/routy-shared';
+import type { Task, TaskPriority, TaskStatus } from '@routy/routy-shared';
 
 import { RequestBodySchema, update_task } from '~/queries/update-task.js';
 import type { UpdateTaskInput } from '~/queries/update-task.js';
 import { useToast } from '~/hooks/use-toast.js';
 import { useRequireMultiModalContext } from '~/hooks/modal.js';
 import { useApiAction } from '~/hooks/fetch/action.js';
+import { TaskStatusButton } from '../tasks/TaskStatusButton.js';
 import { Textarea } from '../shadow-panda/Textarea.js';
 import { ModalContextAware, ModalContent, ModalHeader } from '../general/modal/Modal.js';
 import { Switch } from '../general/Switch.js';
@@ -74,11 +75,31 @@ export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
     },
   });
 
+  const updateQuery = useApiAction({
+    apiCall: update_task,
+    onSuccess: context.onUpdate,
+    onError: error =>
+      toast({
+        title: 'Failed to update task status',
+        description: error?.cause?.detail ?? (error?.message || 'Unknown error'),
+        colorVariant: 'error',
+        duration: 'long',
+      }),
+  });
+
   const handleSubmit = React.useCallback((data: UpdateTaskInput) => query.execute({ body: data }), [query]);
+
+  const handleUpdateStatus = React.useCallback(
+    (status: TaskStatus) => updateQuery.execute({ body: { id: context.task.id, status } }),
+    [context.task.id, updateQuery],
+  );
 
   return (
     <ModalContent>
-      <ModalHeader title={context.task.title} />
+      <ModalHeader
+        title={context.task.title}
+        actions={<TaskStatusButton status={context.task.status} onChange={handleUpdateStatus} />}
+      />
       <Form
         errorToast
         form={form}

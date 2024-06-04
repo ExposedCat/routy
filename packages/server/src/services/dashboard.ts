@@ -56,6 +56,7 @@ export async function getUserDashboard({ userId, db }: { userId: string; db: Dat
           next: [
             {
               $match: {
+                status: 'open',
                 deadline: { $gte: new Date() },
               },
             },
