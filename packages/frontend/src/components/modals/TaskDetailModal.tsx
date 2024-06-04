@@ -22,11 +22,16 @@ export type TaskDetailModalContext = {
   };
 };
 
-export const TaskDetailModel = React.memo((): JSX.Element => {
+export type TaskDetailModalProps = {
+  onClose?: () => void;
+};
+
+export const TaskDetailModel = React.memo((props: TaskDetailModalProps): JSX.Element => {
+  const { onClose } = props;
   const context = useRequireMultiModalContext<TaskDetailModalContext>();
 
   return (
-    <ModalContextAware context={context} which="detail">
+    <ModalContextAware onClose={onClose} context={context} which="detail">
       {(ctx, handleOnClose) => <ModalBody handleOnClose={handleOnClose} context={ctx} />}
     </ModalContextAware>
   );

@@ -8,6 +8,7 @@ import { attachUpdateUser } from '../controllers/update-user.js';
 import { attachRegister } from '../controllers/register.js';
 import { attachLogin } from '../controllers/login.js';
 import { attachGetSession } from '../controllers/get-session.js';
+import { attachGetDashboard } from '../controllers/get-dashboard.js';
 
 export function createServer(port: number, database: Database) {
   const server = express();
@@ -34,6 +35,7 @@ export function createServer(port: number, database: Database) {
 
   attachUpdateUser(server);
 
+  attachGetDashboard(server);
   attachGetSession(server);
   attachGetTasks(server);
 

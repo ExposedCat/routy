@@ -7,3 +7,4 @@ export * from './models/task.js';
 
 export * from './models/controllers/update-user.js';
 export * from './models/controllers/get-session.js';
+export * from './models/controllers/get-dashboard.js';

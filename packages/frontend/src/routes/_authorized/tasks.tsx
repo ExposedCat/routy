@@ -1,13 +1,16 @@
+import { z } from 'zod';
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { getShortDateTime } from '@routy/routy-shared';
 import type { Task, TaskStatus } from '@routy/routy-shared';
 
+import { readableStatus, statusIcon } from '~/services/task.js';
 import { update_task } from '~/queries/update-task.js';
 import { get_tasks } from '~/queries/tasks.js';
 import { remove_task } from '~/queries/remove-task.js';
 import { AddIcon, CloseIcon, DoneIcon, InProgressIcon, RemoveIcon, WaitingIcon } from '~/icons/react-icons.js';
 import { useToast } from '~/hooks/use-toast.js';
+import { useUpdateSearchParams } from '~/hooks/route.js';
 import { ProvideMultiModalContext, useNewMultiModalContext, type ModalContext } from '~/hooks/modal.js';
 import { useApiLoad } from '~/hooks/fetch/load.js';
 import { useApiAction } from '~/hooks/fetch/action.js';
@@ -24,7 +27,10 @@ import { Flex } from '~/components/general/Flex.js';
 import { DropdownMenuContent, DropdownMenuItem } from '~/components/general/DropdownMenu.js';
 import { Button } from '~/components/general/Button.js';
 
-export const Route = createFileRoute('/_authorized/tasks')({ component: TasksPage });
+export const Route = createFileRoute('/_authorized/tasks')({
+  component: TasksPage,
+  validateSearch: z.object({ taskId: z.string().optional() }),
+});
 
 type TasksModalContext = ConfirmationModalContext & AddTaskModalContext & TaskDetailModalContext;
 
@@ -68,21 +74,16 @@ const TaskStatusButton: React.FC<TaskStatusButtonProps> = props => {
       </DropdownMenuTrigger>
       <DropdownMenuContent maxHeight="container.smaller.sm" overflowY="auto">
         <DropdownMenuGroup>
-          {status !== 'open' && (
-            <DropdownMenuItem onClick={event => handleSelect(event, 'open')} label="Open" icon={WaitingIcon} />
-          )}
-          {status !== 'active' && (
-            <DropdownMenuItem
-              onClick={event => handleSelect(event, 'active')}
-              label="In progress"
-              icon={InProgressIcon}
-            />
-          )}
-          {status !== 'done' && (
-            <DropdownMenuItem onClick={event => handleSelect(event, 'done')} label="Done" icon={DoneIcon} />
-          )}
-          {status !== 'closed' && (
-            <DropdownMenuItem onClick={event => handleSelect(event, 'closed')} label="Closed" icon={CloseIcon} />
+          {(['open', 'active', 'done', 'closed'] as TaskStatus[]).map(
+            newStatus =>
+              newStatus !== status && (
+                <DropdownMenuItem
+                  key={newStatus}
+                  onClick={event => handleSelect(event, newStatus)}
+                  label={readableStatus(newStatus)}
+                  icon={statusIcon(newStatus)}
+                />
+              ),
           )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
@@ -101,6 +102,7 @@ const TaskRow: React.FC<TaskRowProps> = props => {
   const { task, onUpdate, onRemove, modalContext } = props;
 
   const { toast } = useToast();
+  const updateSearch = useUpdateSearchParams<typeof Route.id>();
 
   const removeQuery = useApiAction({
     apiCall: remove_task,
@@ -144,8 +146,8 @@ const TaskRow: React.FC<TaskRowProps> = props => {
   );
 
   const handleRowClick = React.useCallback(() => {
-    modalContext.open('detail', { task, onUpdate });
-  }, [modalContext, onUpdate, task]);
+    void updateSearch({ taskId: task.id });
+  }, [task.id, updateSearch]);
 
   return (
     <TableRow key={task.id} onClick={handleRowClick}>
@@ -164,12 +166,14 @@ const TaskRow: React.FC<TaskRowProps> = props => {
   );
 };
 
-export function TasksPage(): React.JSX.Element {
-  const query = useApiLoad({ apiCall: get_tasks });
+function TasksPage(): React.JSX.Element {
+  const { taskId } = Route.useSearch();
+  const updateSearch = useUpdateSearchParams<typeof Route.id>();
 
   const { toast } = useToast();
-
   const modalContext = useNewMultiModalContext<TasksModalContext>();
+
+  const query = useApiLoad({ apiCall: get_tasks });
 
   const handleUpdate = React.useCallback(() => query.refetch(), [query]);
 
@@ -181,12 +185,28 @@ export function TasksPage(): React.JSX.Element {
     query.refetch();
   }, [query, toast]);
 
+  React.useEffect(() => {
+    if (query.hasData && taskId) {
+      const selectedTask = query.data.tasks.find(task => task.id === taskId);
+      if (selectedTask) {
+        modalContext.open('detail', {
+          task: selectedTask,
+          onUpdate: handleUpdate,
+        });
+      } else {
+        modalContext.close('detail');
+      }
+    } else {
+      modalContext.close('detail');
+    }
+  }, [handleUpdate, modalContext, query.data?.tasks, query.hasData, taskId, updateSearch]);
+
   return (
     <>
       <ProvideMultiModalContext context={modalContext}>
         <AddTaskModel />
         <ConfirmationModal />
-        <TaskDetailModel />
+        <TaskDetailModel onClose={() => updateSearch({ taskId: undefined })} />
       </ProvideMultiModalContext>
       <Page
         title="Tasks"
