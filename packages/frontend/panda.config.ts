@@ -1,4 +1,12 @@
-import { defineConfig, defineGlobalStyles } from "@pandacss/dev";
+import { defineConfig, defineGlobalStyles, defineKeyframes } from "@pandacss/dev";
+
+ 
+export const keyframes = defineKeyframes({
+  move: {
+    '0%': { transform: 'translate3d(-90px, 0, 0)' },
+    '100%': { transform: 'translate3d(85px, 0, 0)' }
+  }
+})
 
 const globalCss = defineGlobalStyles({
   '*': {
@@ -13,6 +21,55 @@ const globalCss = defineGlobalStyles({
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
+  },
+  '.timer-wrapper': {
+    borderRadius: 'full',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'rgba(37,150,190)',
+    width: 'container.smaller.xs',
+    height: 'container.smaller.xs',
+    display: 'flex',
+    overflow: 'hidden',
+  },
+  '.timer-wrapper > div': {
+    width: '100%',
+  },
+  '.timer-wrapper > div > svg': {
+    position: 'relative',
+    width: '100%',
+    height: '15vh',
+    transition: 'all',
+    marginTop: '100%',
+    marginBottom: '-7px',
+    minHeight: '30px',
+    maxHeight: '45px',
+  },
+  '.timer-wrapper > div > svg ~ div': {
+    height: '100%',
+    backgroundColor: 'rgba(37,150,190)',
+  },
+  '.parallax > use': {
+    animationName: 'move',
+    animationDuration: '25s',
+    animationIterationCount: 'infinite',
+    animationTimingFunction: 'cubic-bezier(.55,.5,.45,.5)'
+  },
+  '.parallax > use:nth-child(1)': {
+    animationDelay: '-2s',
+    animationDuration: '7s',
+  },
+  '.parallax > use:nth-child(2)': {
+    animationDelay: '-3s',
+    animationDuration: '10s',
+  },
+  '.parallax > use:nth-child(3)': {
+    animationDelay: '-4s',
+    animationDuration: '13s',
+  },
+  '.parallax > use:nth-child(4)': {
+    animationDelay: '-5s',
+    animationDuration: '20s',
   },
 });
 
@@ -32,6 +89,7 @@ export default defineConfig({
   },
   theme: {
     extend: {
+      keyframes,
       tokens: {
         colors: {
           hover: {

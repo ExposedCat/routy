@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from '@styled-system/css/css.mjs';
 
-import { CollapseIcon, DashboardIcon, ExpandIcon, SettingsIcon, TasksIcon } from '~/icons/react-icons.js';
+import { CollapseIcon, DashboardIcon, ExpandIcon, SettingsIcon, TasksIcon, TimerIcon } from '~/icons/react-icons.js';
 import { Flex } from '../Flex.js';
 import { SidebarButton, type SidebarButtonStyleProps } from './SidebarButton.js';
 
@@ -48,6 +48,14 @@ export const Sidebar = (): React.JSX.Element => {
             expanded={expanded}
             redirect="/tasks"
             position="top"
+            {...buttonOptions}
+          />
+          <SidebarButton
+            label="Timer"
+            icon={TimerIcon}
+            expanded={expanded}
+            redirect="/timer"
+            position="middle"
             {...buttonOptions}
           />
           <SidebarButton

@@ -51,7 +51,7 @@ function Root(): React.JSX.Element {
   return (
     <ProvideSession value={sessionQuery.data ?? null}>
       <ProvideIconStyles>
-        <Flex direction="horizontal" justify="start" align="full" className={contentStyles}>
+        <Flex justify="start" className={contentStyles}>
           {!onPublic && sessionQuery.data && <Sidebar />}
           {(onPublic || (sessionQuery.hasData && sessionQuery.data !== null)) && <Outlet />}
         </Flex>

@@ -19,6 +19,7 @@ export const Switch = <T extends string>(props: SwitchProps<T>, ref: React.Ref<H
     <Flex ref={ref} {...flexProps}>
       {items.map((item, i) => (
         <Button
+          width={flexProps.width === 'full' ? 'full' : undefined}
           key={item.value}
           label={item.label}
           variant={item.value === value ? 'filled' : 'outline'}

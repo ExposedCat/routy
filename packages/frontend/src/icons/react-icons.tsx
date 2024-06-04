@@ -16,6 +16,10 @@ export {
   MdCheck as DoneIcon,
   MdMoreHoriz as InProgressIcon,
   MdAccessTime as WaitingIcon,
+  MdTimer as TimerIcon,
+  MdPlayArrow as PlayIcon,
+  MdPause as PauseIcon,
+  MdStop as StopIcon,
 } from 'react-icons/md';
 
 export { IoSettingsSharp as SettingsIcon } from 'react-icons/io5';

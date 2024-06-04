@@ -15,13 +15,8 @@ export function attachGetSession(server: Express) {
       return res.status(200).json({ ok: false, message: 'User does not exist', data: null });
     }
 
-    return res.status(200).json({
-      ok: true,
-      message: 'User found',
-      data: {
-        name: user.name,
-        email: user.email,
-      },
-    });
+    const { password: _, ...data } = user;
+
+    return res.status(200).json({ ok: true, message: 'User found', data });
   });
 }

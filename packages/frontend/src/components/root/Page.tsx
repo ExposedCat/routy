@@ -4,16 +4,18 @@ import { css } from '@styled-system/css/css.mjs';
 import type { NavigationProps } from '~/router.js';
 import { BackIcon } from '~/icons/react-icons.js';
 import { PageTitle } from '../general/Text.js';
+import type { FlexProps } from '../general/Flex.js';
 import { RedirectButton } from '../general/Button.js';
 
-export type PageProps<T extends string = ''> = React.PropsWithChildren<{
-  title?: React.ReactNode;
-  actions?: React.ReactNode;
-  backTo?: NavigationProps<T>;
-}>;
+export type PageProps<T extends string = ''> = FlexProps &
+  React.PropsWithChildren<{
+    title?: React.ReactNode;
+    actions?: React.ReactNode;
+    backTo?: NavigationProps<T>;
+  }>;
 
 export const Page = <T extends string = ''>(props: PageProps<T>): React.JSX.Element => {
-  const { title, actions, children, backTo } = props;
+  const { title, actions, children, backTo, ...rest } = props;
 
   const pageStyles = css({
     overflowY: 'auto',
@@ -43,6 +45,7 @@ export const Page = <T extends string = ''>(props: PageProps<T>): React.JSX.Elem
         gap="sm"
         maxWidth="container.xl"
         position="relative"
+        {...rest}
       >
         {children}
       </Flex>
