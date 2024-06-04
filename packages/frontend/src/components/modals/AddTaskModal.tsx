@@ -69,7 +69,13 @@ export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
     },
   });
 
-  const handleSubmit = React.useCallback((data: AddTaskInput) => query.execute({ body: data }), [query]);
+  const handleSubmit = React.useCallback(
+    (data: AddTaskInput) => {
+      console.log(data);
+      query.execute({ body: data });
+    },
+    [query],
+  );
 
   return (
     <ModalContent>

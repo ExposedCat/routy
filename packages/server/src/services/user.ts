@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import type { UpdateFilter } from 'mongodb';
-import type { PrivateUser } from '@routy/routy-shared';
+import { UserSchema, type PrivateUser } from '@routy/routy-shared';
 
 import type { Database } from '../types/database/database.js';
 
@@ -28,5 +28,5 @@ export function createUser({
 }
 
 export function updateUser({ userId, db, data }: { userId: string; db: Database; data: UpdateFilter<PrivateUser> }) {
-  return db.users.updateOne({ _id: new ObjectId(userId) }, { $set: data });
+  return db.users.updateOne({ _id: new ObjectId(userId) }, { $set: UserSchema.partial().parse(data) });
 }

@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import type { UpdateFilter } from 'mongodb';
-import type { PrivateTask, Task } from '@routy/routy-shared';
+import { TaskSchema, type PrivateTask, type Task } from '@routy/routy-shared';
 
 import type { Database } from '../types/database/database.js';
 
@@ -33,7 +33,7 @@ export function createTask({ db, task }: { db: Database; task: PrivateTask }) {
 }
 
 export function updateTask({ taskId, db, data }: { taskId: string; db: Database; data: UpdateFilter<PrivateTask> }) {
-  return db.tasks.updateOne({ _id: new ObjectId(taskId) }, { $set: data });
+  return db.tasks.updateOne({ _id: new ObjectId(taskId) }, { $set: TaskSchema.partial().parse(data) });
 }
 
 export function deleteTask({ taskId, db }: { taskId: string; db: Database }) {

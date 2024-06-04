@@ -1,8 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import type { DashboardData } from '@routy/routy-shared';
 
-import { get_dashboard } from '~/queries/get-dashboard.js';
-import { useApiLoad } from '~/hooks/fetch/load.js';
 import { Header, Label } from '../general/Text.js';
 import { Flex } from '../general/Flex.js';
 import type { FlexProps } from '../general/Flex.js';

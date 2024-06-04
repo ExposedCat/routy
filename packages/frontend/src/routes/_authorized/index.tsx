@@ -43,7 +43,7 @@ function DashboardPage(): React.JSX.Element {
         <>
           <TasksCard dashboard={query.data} />
           <Wrap gap="sm">
-            {query.data.overdue && (
+            {query.data.mostOverdue.length > 0 && (
               <CardList minWidth="container.smaller.sm" title={<Header text="Overdue" color="error" />}>
                 {query.data.mostOverdue.map(task => (
                   <RawCardListItem
@@ -55,7 +55,7 @@ function DashboardPage(): React.JSX.Element {
                         <TaskPriorityBadge priority={task.priority} />
                       </Flex>
                     }
-                    value={<Label text={getShortDateTime(new Date())} color="light" />}
+                    value={<Label text={getShortDateTime(task.deadline)} color="light" />}
                   />
                 ))}
               </CardList>
@@ -70,7 +70,7 @@ function DashboardPage(): React.JSX.Element {
                       <TaskPriorityBadge priority={query.data.next.priority} />
                     </Flex>
                   }
-                  value={<Label text={getShortDateTime(new Date())} color="light" />}
+                  value={<Label text={getShortDateTime(query.data.next.deadline)} color="light" />}
                 />
               </CardList>
             )}
