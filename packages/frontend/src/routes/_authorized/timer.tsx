@@ -17,6 +17,15 @@ function TimerPage(): React.JSX.Element {
   const [span, setSpan] = React.useState(5 * MINUTE);
   const [progress, setProgress] = React.useState(0);
 
+  const tickingAudio = React.useMemo(() => {
+    const audio = new Audio('/ticking.mp3');
+    audio.loop = true;
+    return audio;
+  }, []);
+
+  const clickAudio = React.useMemo(() => new Audio('/click.mp3'), []);
+  const ringAudio = React.useMemo(() => new Audio('/ring.mp3'), []);
+
   const left = React.useMemo(() => {
     const diff = span - progress;
     const minutes = (diff / MINUTE) | 0;
@@ -26,21 +35,34 @@ function TimerPage(): React.JSX.Element {
 
   const svgRef = React.createRef<SVGSVGElement>();
 
-  const stopTimer = React.useCallback(() => {
-    setTicking(false);
-    setStarted(false);
-    setProgress(0);
-    if (svgRef.current) {
-      svgRef.current.style.marginTop = `100%`;
-    }
-  }, [svgRef]);
+  const stopTimer = React.useCallback(
+    (sound = false) => {
+      setTicking(false);
+      setStarted(false);
+      setProgress(0);
+      tickingAudio.pause();
+      if (sound) {
+        void ringAudio.play();
+      }
+      if (svgRef.current) {
+        svgRef.current.style.marginTop = `100%`;
+      }
+    },
+    [ringAudio, svgRef, tickingAudio],
+  );
+
+  const startTimer = React.useCallback(() => {
+    setTicking(true);
+    setStarted(true);
+    void tickingAudio.play();
+  }, [tickingAudio]);
 
   React.useEffect(() => {
     if (ticking) {
       const interval = setInterval(() => {
         if (started && ticking) {
           if (progress >= span) {
-            stopTimer();
+            stopTimer(true);
             return;
           }
           setProgress(current => {
@@ -57,17 +79,23 @@ function TimerPage(): React.JSX.Element {
   }, [progress, span, started, stopTimer, svgRef, ticking]);
 
   const handlePlayClick = React.useCallback(() => {
+    void clickAudio.play();
     if (started) {
       stopTimer();
     } else {
-      setStarted(true);
-      setTicking(true);
+      startTimer();
     }
-  }, [started, stopTimer]);
+  }, [clickAudio, startTimer, started, stopTimer]);
 
   const handlePauseClick = React.useCallback(() => {
+    void clickAudio.play();
     setTicking(current => !current);
-  }, []);
+    if (ticking) {
+      tickingAudio.pause();
+    } else {
+      void tickingAudio.play();
+    }
+  }, [clickAudio, ticking, tickingAudio]);
 
   return (
     <Page title="Timer" justify="center" align="center" height="full">
