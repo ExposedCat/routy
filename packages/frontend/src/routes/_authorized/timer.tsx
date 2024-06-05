@@ -1,81 +1,82 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import { MINUTE, SECOND } from '@routy/routy-shared';
 
-import { Flex } from '~/styled-system/jsx/flex.mjs';
 import { PauseIcon, PlayIcon, StopIcon } from '~/icons/react-icons.js';
 import { Page } from '~/components/root/Page.js';
+import { PageTitle } from '~/components/general/Text.js';
 import { Switch } from '~/components/general/Switch.js';
+import { Flex } from '~/components/general/Flex.js';
 import { Button } from '~/components/general/Button.js';
 
 export const Route = createFileRoute('/_authorized/timer')({ component: TimerPage });
 
-const TIMER_TICK_TIME = 1_000;
-
 function TimerPage(): React.JSX.Element {
-  const [started, setStarted] = React.useState<Date | null>(null);
-  const [progressOffset, setProgressOffset] = React.useState(0);
+  const [started, setStarted] = React.useState(false);
   const [ticking, setTicking] = React.useState(false);
-  const [span, setSpan] = React.useState(5);
+  const [span, setSpan] = React.useState(5 * MINUTE);
+  const [progress, setProgress] = React.useState(0);
+
+  const left = React.useMemo(() => {
+    const diff = span - progress;
+    const minutes = (diff / MINUTE) | 0;
+    const seconds = ((diff - minutes * MINUTE) / SECOND) | 0;
+    return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }, [progress, span]);
 
   const svgRef = React.createRef<SVGSVGElement>();
 
   const stopTimer = React.useCallback(() => {
     setTicking(false);
-    setStarted(null);
-    setProgressOffset(0);
+    setStarted(false);
+    setProgress(0);
     if (svgRef.current) {
       svgRef.current.style.marginTop = `100%`;
     }
   }, [svgRef]);
 
-  const getCurrentProgress = React.useCallback(() => {
-    const ticksElapsed = (Date.now() - Number(started)) / TIMER_TICK_TIME;
-    return progressOffset + (ticksElapsed / ((span * 1_000) / TIMER_TICK_TIME)) * 100;
-  }, [progressOffset, span, started]);
-
   React.useEffect(() => {
     if (ticking) {
       const interval = setInterval(() => {
-        if (started) {
-          const progress = getCurrentProgress();
-          if (progress >= 100) {
+        if (started && ticking) {
+          if (progress >= span) {
             stopTimer();
             return;
           }
-          if (svgRef.current) {
-            svgRef.current.style.marginTop = `${100 - progress}%`;
-          }
+          setProgress(current => {
+            const newProgress = current + SECOND;
+            if (svgRef.current) {
+              svgRef.current.style.marginTop = `${(1 - newProgress / span) * 100 - 10}%`;
+            }
+            return newProgress;
+          });
         }
-      }, TIMER_TICK_TIME);
+      }, SECOND);
       return () => clearInterval(interval);
     }
-  }, [getCurrentProgress, progressOffset, span, started, stopTimer, svgRef, ticking]);
+  }, [progress, span, started, stopTimer, svgRef, ticking]);
 
   const handlePlayClick = React.useCallback(() => {
     if (started) {
       stopTimer();
     } else {
+      setStarted(true);
       setTicking(true);
-      setStarted(new Date());
     }
   }, [started, stopTimer]);
 
   const handlePauseClick = React.useCallback(() => {
-    setTicking(current => {
-      if (current) {
-        setProgressOffset(getCurrentProgress());
-      } else {
-        setStarted(new Date());
-      }
-      return !current;
-    });
-  }, [getCurrentProgress]);
+    setTicking(current => !current);
+  }, []);
 
   return (
     <Page title="Timer" justify="center" align="center" height="full">
       <Flex marginBottom="lg" direction="column" gap="sm">
         {/* See panda config for styles */}
         <div className="timer-wrapper">
+          <Flex position="absolute" full align="center" justify="center" zIndex={10}>
+            <PageTitle font="monospace" text={left} color={progress > span * 0.6 ? 'white' : undefined} />
+          </Flex>
           <div>
             <svg
               ref={svgRef}
@@ -104,10 +105,11 @@ function TimerPage(): React.JSX.Element {
               width="full"
               value={span.toString()}
               items={[
-                { value: '5', label: '5m' },
-                { value: '15', label: '15m' },
-                { value: '20', label: '20m' },
-                { value: '25', label: '25m' },
+                { value: `${30 * SECOND}`, label: '30s' },
+                { value: `${5 * MINUTE}`, label: '5m' },
+                { value: `${15 * MINUTE}`, label: '15m' },
+                { value: `${20 * MINUTE}`, label: '20m' },
+                { value: `${25 * MINUTE}`, label: '25m' },
               ]}
               onChange={value => setSpan(Number(value))}
             />

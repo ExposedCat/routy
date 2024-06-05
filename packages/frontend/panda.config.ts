@@ -31,6 +31,7 @@ const globalCss = defineGlobalStyles({
     height: 'container.smaller.xs',
     display: 'flex',
     overflow: 'hidden',
+    position: 'relative'
   },
   '.timer-wrapper > div': {
     width: '100%',
