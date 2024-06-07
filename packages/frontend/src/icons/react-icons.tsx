@@ -21,6 +21,7 @@ export {
   MdPause as PauseIcon,
   MdStop as StopIcon,
   MdRefresh as RefreshIcon,
+  MdKeyboardDoubleArrowRight as RightIcon,
 } from 'react-icons/md';
 
 export { IoSettingsSharp as SettingsIcon } from 'react-icons/io5';

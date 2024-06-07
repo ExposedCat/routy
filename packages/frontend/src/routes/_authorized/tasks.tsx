@@ -28,7 +28,10 @@ import { Button } from '~/components/general/Button.js';
 
 export const Route = createFileRoute('/_authorized/tasks')({
   component: TasksPage,
-  validateSearch: z.object({ taskId: z.string().optional() }),
+  validateSearch: z.object({
+    view: z.enum(['table', 'add']).optional(),
+    taskId: z.string().optional(),
+  }),
 });
 
 type TasksModalContext = ConfirmationModalContext & AddTaskModalContext & TaskDetailModalContext;
@@ -109,7 +112,7 @@ const TaskRow: React.FC<TaskRowProps> = props => {
 };
 
 function TasksPage(): React.JSX.Element {
-  const { taskId } = Route.useSearch();
+  const { taskId, view } = Route.useSearch();
   const updateSearch = useUpdateSearchParams<typeof Route.id>();
 
   const { toast } = useToast();
@@ -147,26 +150,26 @@ function TasksPage(): React.JSX.Element {
     }
   }, [handleUpdate, modalContext, query.data?.tasks, query.hasData, taskId, updateSearch]);
 
+  React.useEffect(() => {
+    if (view === 'table') {
+      modalContext.close('add');
+    } else if (view === 'add') {
+      modalContext.open('add', {
+        onSuccess: query.refetch,
+      });
+    }
+  }, [modalContext, query.refetch, view]);
+
   return (
     <>
       <ProvideMultiModalContext context={modalContext}>
-        <AddTaskModel />
+        <AddTaskModel onClose={() => updateSearch({ view: 'table' })} />
         <ConfirmationModal />
         <TaskDetailModel onClose={() => updateSearch({ taskId: undefined })} />
       </ProvideMultiModalContext>
       <Page
         title="Tasks"
-        actions={
-          <Button
-            label="Add Task"
-            icon={AddIcon}
-            onClick={() =>
-              modalContext.open('add', {
-                onSuccess: query.refetch,
-              })
-            }
-          />
-        }
+        actions={<Button label="Add Task" icon={AddIcon} onClick={() => updateSearch({ view: 'add' })} />}
         networkSafe
       >
         {!query.finished && <TableSkeleton />}
