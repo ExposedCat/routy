@@ -279,6 +279,7 @@ export default defineConfig({
         borders: {
           outline: {
             base: { value: '1px solid {colors.light.gray}' },
+            white: { value: '1px solid white' },
           },
           border: {
             base: { value: '1px solid {colors.decoration.gray}' },

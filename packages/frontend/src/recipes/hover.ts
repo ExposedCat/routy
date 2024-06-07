@@ -165,7 +165,7 @@ export const hoverStyles = cva({
     {
       variant: 'outline',
       colorVariant: 'white',
-      hoverStyle: 'strong', // TODO: hover styles?
+      hoverStyle: 'strong',
       css: hoverEffect('light.gray', false),
     },
     {

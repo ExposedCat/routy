@@ -14,8 +14,11 @@ const sidebarButtonRecipe = cva({
   base: {
     paddingX: 'sm',
     whiteSpace: 'nowrap',
-    borderWidth: 0,
-    bgColor: { _hover: 'white' },
+    border: 'none',
+    _hover: {
+      background: 'dark.active',
+      color: 'white',
+    },
   },
   variants: {
     layout: {
@@ -27,6 +30,7 @@ const sidebarButtonRecipe = cva({
       top: { roundedBottom: 0 },
       middle: { rounded: 0 },
       bottom: { roundedTop: 0 },
+      single: { rounded: 'common' },
     },
     align: {
       left: { justifyContent: 'start' },
@@ -40,6 +44,9 @@ const sidebarButtonRecipe = cva({
       true: { color: 'gray' },
     },
   },
+  defaultVariants: {
+    position: 'single',
+  },
 });
 
 export type SidebarButtonStyleProps = PropsFromCVA<typeof sidebarButtonRecipe>;
@@ -48,7 +55,6 @@ export type SidebarButtonProps = SidebarButtonStyleProps &
     label: string;
     icon: IconType;
     expanded?: boolean;
-    position?: 'top' | 'middle' | 'bottom';
     onClick?: () => void;
     isActive?: boolean;
     redirect?: NavigationRouteId;

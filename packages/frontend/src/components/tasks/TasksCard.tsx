@@ -31,6 +31,7 @@ export const TasksCard: React.FC<CardProps & { dashboard: DashboardData }> = pro
         minWidth="container.xs"
         direction="row"
         justify="space-between"
+        withHoverEffect
         {...props}
       >
         <Flex direction="column">

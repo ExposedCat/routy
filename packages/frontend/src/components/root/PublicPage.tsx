@@ -45,6 +45,7 @@ export const PublicPage = <T extends string = ''>(props: React.PropsWithChildren
         <img
           className={css({
             maxWidth: 'container.sm',
+            width: 'inherit',
           })}
           src="/logo.webp"
         />

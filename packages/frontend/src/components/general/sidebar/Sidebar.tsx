@@ -60,7 +60,7 @@ export const Sidebar = (): React.JSX.Element => {
             icon={DashboardIcon}
             expanded={expanded}
             redirect="/"
-            position={session ? 'top' : undefined}
+            position={session ? 'single' : 'top'}
             {...buttonOptions}
           />
           {!session && (
