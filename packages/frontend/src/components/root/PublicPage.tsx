@@ -1,5 +1,4 @@
 import { css } from '~/styled-system/css/css.mjs';
-import { staticImageUrl } from '~/services/url.js';
 import { Flex } from '../general/Flex.js';
 import type { PageProps } from './Page.js';
 
@@ -43,8 +42,12 @@ export const PublicPage = <T extends string = ''>(props: React.PropsWithChildren
         className={rightFlex}
         full
       >
-        {/* TODO: */}
-        <img src={staticImageUrl('login')} />
+        <img
+          className={css({
+            maxWidth: 'container.sm',
+          })}
+          src="/logo.webp"
+        />
       </Flex>
     </Flex>
   );

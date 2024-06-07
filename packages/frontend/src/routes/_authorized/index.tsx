@@ -37,7 +37,7 @@ function DashboardPage(): React.JSX.Element {
   const query = useApiLoad({ apiCall: get_dashboard });
 
   return (
-    <Page title="Dashboard">
+    <Page title="Dashboard" networkSafe>
       {!query.finished && <GridSkeleton rows={2} columns={2} />}
       {query.hasData && (
         <>

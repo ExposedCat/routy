@@ -69,6 +69,7 @@ export function LoginPage(): React.JSX.Element {
         <Flex gap="xxs" direction="column" align="center">
           <RedirectButton variant="link" label="No account? Sign Up here." navigate={{ to: '/signup' }} />
           {/* <Button variant="link" label="Forgot Password?" navigate={{ to: '/reset-password' }} /> */}
+          <RedirectButton navigate={{ to: '/timer' }} variant="link" label="Continue as Guest" />
         </Flex>
       </Flex>
     </PublicPage>

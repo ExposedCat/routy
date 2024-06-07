@@ -1,11 +1,24 @@
 import React from 'react';
 import { css } from '@styled-system/css/css.mjs';
 
-import { CollapseIcon, DashboardIcon, ExpandIcon, SettingsIcon, TasksIcon, TimerIcon } from '~/icons/react-icons.js';
+import { useNullableSession } from '~/providers/session.js';
+import {
+  CollapseIcon,
+  DashboardIcon,
+  ExpandIcon,
+  LoginIcon,
+  SettingsIcon,
+  TasksIcon,
+  TimerIcon,
+} from '~/icons/react-icons.js';
+import { useNetworkState } from '~/hooks/network.js';
 import { Flex } from '../Flex.js';
 import { SidebarButton, type SidebarButtonStyleProps } from './SidebarButton.js';
 
 export const Sidebar = (): React.JSX.Element => {
+  const session = useNullableSession();
+  const isOnline = useNetworkState();
+
   const [expanded, setExpanded] = React.useState<boolean>(() => {
     const sidebarExpanded = localStorage.getItem('sidebarExpanded');
     return sidebarExpanded === 'true' || sidebarExpanded == null;
@@ -33,6 +46,7 @@ export const Sidebar = (): React.JSX.Element => {
   const buttonOptions: SidebarButtonStyleProps = {
     layout: 'fullWidth',
     align: 'left',
+    disabled: !isOnline || !session,
   };
 
   const groupStyles = css({ width: '100%' });
@@ -40,7 +54,27 @@ export const Sidebar = (): React.JSX.Element => {
   return (
     <Flex justify="space-between" align="center" flexDirection="column" className={sidebarStyles}>
       <Flex direction="column" gap="sm" width="full">
-        <SidebarButton label="Dashboard" icon={DashboardIcon} expanded={expanded} redirect="/" {...buttonOptions} />
+        <Flex direction="column" className={groupStyles}>
+          <SidebarButton
+            label="Dashboard"
+            icon={DashboardIcon}
+            expanded={expanded}
+            redirect="/"
+            position={session ? 'top' : undefined}
+            {...buttonOptions}
+          />
+          {!session && (
+            <SidebarButton
+              label="Log In"
+              icon={LoginIcon}
+              expanded={expanded}
+              redirect="/login"
+              position="bottom"
+              {...buttonOptions}
+              disabled={false}
+            />
+          )}
+        </Flex>
         <Flex direction="column" className={groupStyles}>
           <SidebarButton
             label="Tasks"
@@ -57,6 +91,7 @@ export const Sidebar = (): React.JSX.Element => {
             redirect="/timer"
             position="middle"
             {...buttonOptions}
+            disabled={false}
           />
           <SidebarButton
             label="Preferences"
@@ -74,6 +109,7 @@ export const Sidebar = (): React.JSX.Element => {
         expanded={expanded}
         onClick={handleExpand}
         {...buttonOptions}
+        disabled={false}
       />
     </Flex>
   );

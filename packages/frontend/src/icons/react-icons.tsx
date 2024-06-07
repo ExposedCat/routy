@@ -20,6 +20,7 @@ export {
   MdPlayArrow as PlayIcon,
   MdPause as PauseIcon,
   MdStop as StopIcon,
+  MdRefresh as RefreshIcon,
 } from 'react-icons/md';
 
 export { IoSettingsSharp as SettingsIcon } from 'react-icons/io5';

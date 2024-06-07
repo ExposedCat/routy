@@ -184,9 +184,11 @@ export type RedirectButtonProps<T extends string = ''> = WithNavigate<typeof But
 export const RedirectButton = <T extends string = ''>(props: RedirectButtonProps<T>) => {
   const { navigate, ...rest } = props;
 
-  return (
-    <Navigational navigate={navigate}>
-      <Button width="full" {...rest} />
-    </Navigational>
-  );
+  const button = React.useMemo(() => <Button width="full" {...rest} />, [rest]);
+
+  if (rest.disabled) {
+    return button;
+  }
+
+  return <Navigational navigate={navigate}>{button}</Navigational>;
 };

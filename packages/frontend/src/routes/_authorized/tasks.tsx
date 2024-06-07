@@ -167,6 +167,7 @@ function TasksPage(): React.JSX.Element {
             }
           />
         }
+        networkSafe
       >
         {!query.finished && <TableSkeleton />}
         {query.hasData && (

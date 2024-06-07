@@ -36,6 +36,9 @@ const sidebarButtonRecipe = cva({
     active: {
       true: { color: 'primary' },
     },
+    disabled: {
+      true: { color: 'gray' },
+    },
   },
 });
 
@@ -66,6 +69,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = props => {
     layout,
     align,
     active,
+    disabled: rest.disabled,
   });
 
   return (

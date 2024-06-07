@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, createRootRoute, useNavigate } from '@tanstack/react-router';
+import { Outlet, createRootRoute } from '@tanstack/react-router';
 import { Flex } from '@styled-system/jsx/flex.mjs';
 import { css } from '@styled-system/css/css.mjs';
 
@@ -19,10 +19,7 @@ export const Route = createRootRoute({
 });
 
 function Root(): React.JSX.Element {
-  const navigate = useNavigate();
   const matches = useMatchesRoutes();
-
-  const [onPublic, setOnPublic] = React.useState(false);
 
   const sessionQuery = useApiLoad({ apiCall: get_session });
 
@@ -31,17 +28,6 @@ function Root(): React.JSX.Element {
     window.addEventListener('storage', refetch);
     return () => window.removeEventListener('storage', refetch);
   }, [sessionQuery]);
-
-  React.useEffect(() => {
-    if (
-      !matches(PUBLIC_ROUTES, true) &&
-      ((sessionQuery.hasData && sessionQuery.data === null) || sessionQuery.hasError)
-    ) {
-      void navigate({ to: '/login' });
-    } else {
-      setOnPublic(matches(PUBLIC_ROUTES, true));
-    }
-  }, [matches, navigate, sessionQuery.data, sessionQuery.hasData, sessionQuery.hasError]);
 
   const contentStyles = css({
     height: '100%',
@@ -52,8 +38,8 @@ function Root(): React.JSX.Element {
     <ProvideSession value={sessionQuery.data ?? null}>
       <ProvideIconStyles>
         <Flex justify="start" className={contentStyles}>
-          {!onPublic && sessionQuery.data && <Sidebar />}
-          {(onPublic || (sessionQuery.hasData && sessionQuery.data !== null)) && <Outlet />}
+          {!matches(PUBLIC_ROUTES) && <Sidebar />}
+          <Outlet />
         </Flex>
         <Toaster />
       </ProvideIconStyles>

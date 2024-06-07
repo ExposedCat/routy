@@ -3,8 +3,10 @@ import { createFileRoute } from '@tanstack/react-router';
 import { UpdateUserInputSchema } from '@routy/routy-shared';
 import type { UpdateUserInput } from '@routy/routy-shared';
 
+import { sessionService } from '~/services/session.js';
 import { update_user } from '~/queries/update-user.js';
 import { useSession } from '~/providers/session.js';
+import { LoginIcon } from '~/icons/react-icons.js';
 import { useToast } from '~/hooks/use-toast.js';
 import { useApiAction } from '~/hooks/fetch/action.js';
 import { Page } from '~/components/root/Page.js';
@@ -149,8 +151,16 @@ const UpdateDetailsCard: React.FC = () => {
 };
 
 export function SettingsPage(): React.JSX.Element {
+  const handleLogOut = React.useCallback(() => sessionService.unset(), []);
+
   return (
-    <Page title="Settings">
+    <Page
+      title="Preferences"
+      actions={
+        <Button variant="outline" colorVariant="error" icon={LoginIcon} label="Log Out" onClick={handleLogOut} />
+      }
+      networkSafe
+    >
       <UpdateDetailsCard />
       <ChangePasswordCard />
     </Page>
