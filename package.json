@@ -7,13 +7,13 @@
     "lint:strict": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --rule 'no-warning-comments: off' --fix",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --rule 'no-warning-comments: off'",
-    "start:fe": "pnpm --filter @routy/routy-frontend run preview",
-    "dev:fe": "pnpm --filter @routy/routy-frontend run dev",
-    "start:server": "pnpm --filter @routy/routy-server start",
-    "build:shared": "pnpm --filter @routy/routy-shared run build",
-    "build:fe": "pnpm --filter @routy/routy-frontend run build",
-    "build:server": "pnpm --filter @routy/routy-server run build",
-    "build:all": "pnpm -r run build"
+    "start:fe": "npm run preview -w=@routy/routy-frontend",
+    "dev:fe": "npm run dev -w=@routy/routy-frontend",
+    "start:server": "npm start -w=@routy/routy-server",
+    "build:shared": "npm run build --w=@routy/routy-shared",
+    "build:fe": "npm run build --w=@routy/routy-frontend",
+    "build:server": "npm run build --w=@routy/routy-server",
+    "build:all": "npm run build --workspaces --if-present"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
@@ -35,5 +35,6 @@
     "packages/routy-shared",
     "packages/routy-frontend",
     "packages/routy-server"
-  ]
+  ],
+  "packageManager": "pnpm@8.14.2+sha1.1670a65b60df5f95e9f0cb7de46e605d9bd74fda"
 }
