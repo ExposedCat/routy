@@ -2,7 +2,7 @@ import type { z } from 'zod';
 
 import type { AnyApiCall } from './query.js';
 
-export const BACKEND_API_ENDPOINT = 'http://192.168.0.80:8080'; // TODO:
+export const BACKEND_API_ENDPOINT = import.meta.env.VITE_BACKEND_API_ENDPOINT ?? 'http://127.0.0.1:8080';
 
 export function buildApiCallUrl<T extends AnyApiCall>(args: {
   apiCall: T;

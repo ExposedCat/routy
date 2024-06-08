@@ -17,12 +17,12 @@ export default defineConfig(() => {
     publicDir: './public',
     plugins: [react(), TanStackRouterVite()],
     server: {
-      port: 3000,
-      host: '192.168.0.80',
+      port: process.env.DEV_PORT ? Number(process.env.DEV_PORT) : 3000,
+      host: '127.0.0.1',
       watch: {},
     },
     preview: {
-      port: 3001,
+      port: process.env.PROD_PORT ? Number(process.env.PROD_PORT) : 3001,
       host: '127.0.0.1',
     },
   };
