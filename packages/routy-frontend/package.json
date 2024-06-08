@@ -30,7 +30,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "@routy/routy-shared": "workspace:^",
+    "@routy/routy-shared": "^1.0.0",
     "@shadow-panda/style-context": "^0.7.1",
     "@tanstack/react-query": "^5.40.0",
     "@tanstack/react-router": "^1.34.9",
@@ -58,6 +58,5 @@
     "postcss": "^8.4.38",
     "typescript": "^5.4.5",
     "vite": "^5.2.12"
-  },
-  "packageManager": "pnpm@8.14.2+sha1.1670a65b60df5f95e9f0cb7de46e605d9bd74fda"
+  }
 }

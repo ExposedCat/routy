@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams, useRouterState } from '@tanstack/react-router';
 
-import type { NavigationRouteId, NavigationProps } from '../router.tsx';
+import type { NavigationRouteId, NavigationProps } from '../router.js';
 
 export { useNavigate } from '@tanstack/react-router';
 

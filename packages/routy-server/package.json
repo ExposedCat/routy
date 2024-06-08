@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/ExposedCat/routy-api#readme",
   "dependencies": {
-    "@routy/routy-shared": "workspace:^",
+    "@routy/routy-shared": "^1.0.0",
     "async-jsonwebtoken": "^1.0.1",
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
@@ -45,6 +45,5 @@
     "eslint-plugin-sonarjs": "^1.0.3",
     "prettier-eslint": "^16.3.0",
     "typescript": "^4.7.4"
-  },
-  "packageManager": "pnpm@8.14.2+sha1.1670a65b60df5f95e9f0cb7de46e605d9bd74fda"
+  }
 }
