@@ -29,23 +29,23 @@ The goal (one that I will aim at after I spend more time on this project as [one
 
 The task is pretty clear as well as UI. No special algorithms required. For UI, to support all the platforms, the WEB stack was chosen:
 
-- Build tool: **[Vite]()**
+- Build tool: **[Vite](https://vitejs.dev/)**
 - Programming language: **TypeScript**
 - Framework: **React** (lack of time for Svelte)
 - UI Toolkit:
   - **[Panda CSS](https://panda-css.com/)**
-  - **[Shadow Panda](https://shadow-panda.dev/)** (based on **[shadcn ui](https://ui.shadcn.com/)** and **[radix-ui]()**)
-- Routing: **[Tanstack React Router]()** (everything should be typed, routes are no exception)
-- Querying: **[Tanstack Query]()**
-- Icons: **[react-icons]()** (Material Design pack)
-- Runtime validation: **[zod]()** (compile-time validation is not enough especially in this case)
+  - **[Shadow Panda](https://shadow-panda.dev/)** (based on **[shadcn ui](https://ui.shadcn.com/)** and **[radix-ui](https://www.radix-ui.com/)**)
+- Routing: **[Tanstack React Router](https://tanstack.com/router/latest)** (everything should be typed, routes are no exception)
+- Querying: **[Tanstack Query](https://tanstack.com/query/latest)**
+- Icons: **[react-icons](https://react-icons.github.io/react-icons/)** (Material Design pack)
+- Runtime validation: **[Zod](https://zod.dev/)** (compile-time validation is not enough especially in this case)
 
-Back-end (server-side) application was written within the smallest possible amount of time to match already passed deadline, so it was written without many best practices and IS vulnerable to various attacks. Please don't test/try anything on it since you will likely be able to break things and that's expected result. Database itself is running on a different cluster for the sake of security. The stack is:
+Back-end (server-side) application was written within the smallest possible amount of time to match already passed deadline, so it was written without many best practices and IS vulnerable to various attacks. Please don't try to break it because you will likely succeed - that's expected result. Database itself is running on a different cluster for the sake of security. The stack is:
 
 - Programming language: **TypeScript**
 - Network/routing library: **Express**
-- Runtime validation: **[zod]()**
-- Database driver: **[MongoDB]()**
+- Runtime validation: **[Zod](https://zod.dev/)**
+- Database driver: **[MongoDB](https://www.mongodb.com/docs/languages/javascript/)**
 
 This repository is a monorepo:
 
@@ -124,10 +124,22 @@ const OOP = new IrrelevantTask(
   'OOP',
   'Prototypes, usage, etc',
   `
-  I could have wrapped utils within a single class, but it doesn't really fit in the codebase. I hope type operations (extensions, partials, etc) are enough for this part, because it's pretty much the same as you use classes.
+  I could have wrapped utils within a single class, but it doesn't really fit in the codebase.
+  I hope type operations (extensions, partials, etc) are enough for this part,
+  because it's pretty much the same as you use classes.
 `,
 );
 ```
 
 - Advanced JS APIs: I use local storage API for JWT. I plan to use WebSockets for realtime updates listening. Note: I intentionally chose local storage. Nowadays, local storage is not more vulnerable to XSS attacks then cookies. If attacker succeeds in XSS, hiding token won't help you with anything since XSS means they can do whatever user does with your session - no need to know the token. HTTPOnly and other stuff solve consequence instead of solving the problem
 - Media JS API: Timer uses JS API, not HTML5 tags (that's the same thing tho)
+
+# Build & Run
+
+- Install dependencies `npm install`
+- Build packages `npm run build:all`
+- Run server `npm run start:server`
+- Either
+  - Start dev frontend server `npm run dev:fe`
+  - Build frontend `npm run build:fe`
+    - Run built frontend `npm run start:fe`
