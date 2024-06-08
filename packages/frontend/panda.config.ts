@@ -206,7 +206,7 @@ export default defineConfig({
               'label-height': { value: '56px' },
               'grid-gap': { value: '28px' },
             },
-            'side-bar': {
+            'sideBar': {
               'collapsed': { value: '65px' },
               'expanded': { value: '210px' },
             },

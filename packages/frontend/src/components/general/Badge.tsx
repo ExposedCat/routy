@@ -85,6 +85,9 @@ export const Badge = (props: BadgeProps) => {
       pointerEvents={tooltip ? 'visible' : pointerEvents}
       cursor={tooltip ? 'help' : cursor}
       {...rest}
+      flexShrink={0}
+      flexGrow={0}
+      height="min-content"
     >
       <Flex
         direction={iconPosition === 'start' ? 'row' : 'row-reverse'}

@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import type { DashboardData } from '@routy/routy-shared';
 
+import { useOnMobile } from '~/hooks/mobile.js';
 import { Header, Label } from '../general/Text.js';
 import { Flex } from '../general/Flex.js';
 import type { FlexProps } from '../general/Flex.js';
@@ -23,12 +24,16 @@ const TaskCardEntry: React.FC<TaskCardEntryProps> = props => {
 };
 
 export const TasksCard: React.FC<CardProps & { dashboard: DashboardData }> = props => {
+  const onMobile = useOnMobile();
+
+  console.log(onMobile);
+
   return (
     <Link to="/tasks">
       <Card
+        gap="md"
         variant="filled"
         colorVariant="active"
-        minWidth="container.xs"
         direction="row"
         justify="space-between"
         withHoverEffect

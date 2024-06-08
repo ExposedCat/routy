@@ -1,4 +1,5 @@
 export {
+  MdKeyboardDoubleArrowUp as CollapseUpIcon,
   MdKeyboardDoubleArrowLeft as CollapseIcon,
   MdKeyboardDoubleArrowRight as ExpandIcon,
   MdChevronLeft as BackIcon,
@@ -22,6 +23,7 @@ export {
   MdStop as StopIcon,
   MdRefresh as RefreshIcon,
   MdKeyboardDoubleArrowRight as RightIcon,
+  MdMenu as MenuIcon,
 } from 'react-icons/md';
 
 export { IoSettingsSharp as SettingsIcon } from 'react-icons/io5';

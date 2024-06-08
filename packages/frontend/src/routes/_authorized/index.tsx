@@ -39,13 +39,13 @@ const TaskPriorityBadge: React.FC<{ priority: Task['priority'] }> = props => (
 );
 
 const OverdueCard: React.FC<{ tasks: Task[] }> = props => (
-  <CardList minWidth="container.smaller.sm" title={<Header text="Overdue" color="error" />}>
+  <CardList title={<Header text="Overdue" color="error" />}>
     {props.tasks.map(task => (
       <RawCardListItem
         key={task.id}
         navigate={{ to: '/tasks', search: { taskId: task.id } }}
         label={
-          <Flex gap="xs">
+          <Flex gap="xs" align="center">
             <NormalText text={task.title} />
             <TaskPriorityBadge priority={task.priority} />
           </Flex>

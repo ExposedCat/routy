@@ -77,6 +77,7 @@ export function SignupPage(): React.JSX.Element {
         </Form>
         <Flex gap="xxs" direction="column" align="center">
           <RedirectButton variant="link" label="Already have an account? Log In here." navigate={{ to: '/login' }} />
+          <RedirectButton navigate={{ to: '/timer' }} variant="link" label="Continue as Guest" />
         </Flex>
       </Flex>
     </PublicPage>

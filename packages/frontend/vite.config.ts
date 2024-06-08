@@ -18,7 +18,7 @@ export default defineConfig(() => {
     plugins: [react(), TanStackRouterVite()],
     server: {
       port: 3000,
-      host: '127.0.0.1',
+      host: '192.168.0.80',
       watch: {},
     },
     preview: {

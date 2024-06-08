@@ -98,7 +98,7 @@ const TaskRow: React.FC<TaskRowProps> = props => {
     <TableRow key={task.id} onClick={handleRowClick}>
       <TableCell fontWeight="medium">{task.title}</TableCell>
       <TableCell>{getShortDateTime(task.deadline)}</TableCell>
-      <TableCell minWidth="table.cell.min-width" fontWeight="medium">
+      <TableCell hideBelow="sm" minWidth="table.cell.min-width" fontWeight="medium">
         {task.description}
       </TableCell>
       <TableCell>
@@ -178,7 +178,7 @@ function TasksPage(): React.JSX.Element {
             <TableHeader>
               <TableHead>Title</TableHead>
               <TableHead>Deadline</TableHead>
-              <TableHead>Description</TableHead>
+              <TableHead hideBelow="sm">Description</TableHead>
               <TableHead>{/* Buttons */}</TableHead>
             </TableHeader>
             <TableBody>

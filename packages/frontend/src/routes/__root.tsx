@@ -8,6 +8,7 @@ import { get_session } from '~/queries/session.js';
 import { ProvideSession } from '~/providers/session.js';
 import { ProvideIconStyles } from '~/icons/style-provider.js';
 import { useMatchesRoutes } from '~/hooks/route.js';
+import { useOnMobile } from '~/hooks/mobile.js';
 import { useApiLoad } from '~/hooks/fetch/load.js';
 import { Toaster } from '~/components/shadow-panda/Toaster.js';
 import { NotFoundPage } from '~/components/root/NotFoundPage.js';
@@ -20,6 +21,7 @@ export const Route = createRootRoute({
 
 function Root(): React.JSX.Element {
   const matches = useMatchesRoutes();
+  const onMobile = useOnMobile();
 
   const sessionQuery = useApiLoad({ apiCall: get_session });
 
@@ -32,13 +34,17 @@ function Root(): React.JSX.Element {
   const contentStyles = css({
     height: '100%',
     overflowY: 'hidden',
+    flexDirection: {
+      base: 'column',
+      sm: 'row',
+    },
   });
 
   return (
     <ProvideSession value={sessionQuery.data ?? null}>
       <ProvideIconStyles>
         <Flex justify="start" className={contentStyles}>
-          {!matches(PUBLIC_ROUTES) && <Sidebar />}
+          {!matches(PUBLIC_ROUTES) && !onMobile && <Sidebar />}
           <Outlet />
         </Flex>
         <Toaster />

@@ -81,13 +81,13 @@ export const SidebarButton: React.FC<SidebarButtonProps> = props => {
   return (
     <Tooltip content={label} side="right">
       <RedirectButton
-        {...rest}
         icon={icon}
         iconProps={{ size: 'sm' }}
         colorVariant="white"
         label={expanded ? label : null}
-        className={clsx(buttonStyles, className)}
         navigate={redirect ? { to: redirect } : undefined}
+        {...rest}
+        className={clsx(buttonStyles, className)}
       />
     </Tooltip>
   );

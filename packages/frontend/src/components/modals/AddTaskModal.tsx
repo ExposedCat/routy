@@ -6,12 +6,12 @@ import type { AddTaskInput } from '~/queries/add-task.js';
 import { useToast } from '~/hooks/use-toast.js';
 import { useRequireMultiModalContext } from '~/hooks/modal.js';
 import { useApiAction } from '~/hooks/fetch/action.js';
+import { Wrap } from '../shadow-panda/Wrap.js';
 import { Textarea } from '../shadow-panda/Textarea.js';
 import { ModalContextAware, ModalContent, ModalHeader } from '../general/modal/Modal.js';
 import { Switch } from '../general/Switch.js';
 import { Input } from '../general/Input.js';
 import { Form, FormField, useForm } from '../general/Form.js';
-import { Flex } from '../general/Flex.js';
 import { DateTimePicker } from '../general/DateTimePicker.js';
 import { Button } from '../general/Button.js';
 
@@ -103,7 +103,7 @@ export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
           label="Title"
           render={field => <Input placeholder="Enter Title" {...field} />}
         />
-        <Flex gap="sm">
+        <Wrap gap="sm">
           <FormField
             form={form}
             name="deadline"
@@ -127,7 +127,7 @@ export const ModalBody = (props: ModalBodyProps): React.JSX.Element => {
               />
             )}
           />
-        </Flex>
+        </Wrap>
         <FormField
           form={form}
           name="description"
