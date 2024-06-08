@@ -71,8 +71,8 @@ export function useApiLoad<T extends AnyLoaderApiCall>(args: UseApiLoadArgs<T>):
   );
 
   const queryKey: QueryKey = React.useMemo(
-    () => [session?.userId ?? '', 'api', url, uniqueKey ?? ''],
-    [session?.userId, uniqueKey, url],
+    () => [session?.email ?? '', 'api', url, uniqueKey ?? ''],
+    [session?.email, uniqueKey, url],
   );
 
   const query = useQuery<
