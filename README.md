@@ -90,6 +90,7 @@ I was trying to complete all the requirements, so some things were implemented i
 - CSS selectors, transformations, animations, etc. - timer was written in pure css (not Panda CSS, see `panda.config.ts`, global css section)
 - CSS Media queries - done internally by Panda CSS. From development perspective concept is the same: you specify breakpoints of width and list of styles that apply for it. Also see `hideBelow` prop of Shadow Panda components
 - OOP
+  ![OOP at its finest](/assets/oop.jpg)
 
 ```typescript
 class Task {
